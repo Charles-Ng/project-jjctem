@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { Home } from "./Home";
 
-export class Signup extends Component {
+export class Signin extends Component {
   state = {
     username: "",
     password: "",
@@ -25,13 +25,8 @@ export class Signup extends Component {
   submitForm = e => {
     e.preventDefault();
     console.log(this.state);
-    if (this.state.password.length >= 8 && this.state.password.length > 0) {
-      this.setState({ username: "", password: "" });
-      this.props.history.push("/Home");
-    } else {
-      this.setState({ password: "" });
-      alert("Password has to be at least 8 characters!");
-    }
+    this.setState({ username: "", password: "" });
+    this.props.history.push("/Home");
   };
 
   render() {
@@ -47,9 +42,9 @@ export class Signup extends Component {
     return (
       <div className="wrapper">
         <div className="form-wrapper">
-          <h1>Create Account</h1>
+          <h1>Login</h1>
           <form
-            id="create-account-form"
+            id="signin-account-form"
             onSubmit={this.submitForm.bind(this)}
             noValidate
           >
@@ -75,8 +70,8 @@ export class Signup extends Component {
               />
             </div>
 
-            <div className="createAccount">
-              <button type="submit">Create Account</button>
+            <div className="signin_account">
+              <button type="submit">Login</button>
             </div>
           </form>
         </div>
