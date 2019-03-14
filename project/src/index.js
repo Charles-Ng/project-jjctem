@@ -6,6 +6,7 @@ import { Root } from "./Root";
 import { Home } from "./Home";
 import { Signup } from "./Signup";
 import { Signin } from "./Signin";
+import {Game} from "./Game";
 
 class App extends React.Component {
   render() {
@@ -16,6 +17,7 @@ class App extends React.Component {
           <Route path="/signup" component={Signup} />
           <Route path="/signin" component={Signin} />
           <Route path="/home" component={Home} />
+          <Route path="/game" component={Game} />
         </div>
       </Router>
     );
