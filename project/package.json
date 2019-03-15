@@ -3,9 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "crypto": "^1.0.1",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "fs": "0.0.1-security",
+    "multer": "^1.4.1",
+    "mysql": "^2.16.0",
+    "nedb": "^1.8.0",
+    "path": "^0.12.7",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8"
+    "react-engine": "^4.5.1",
+    "react-scripts": "2.1.8",
+    "req-flash": "0.0.3",
+    "routes": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
