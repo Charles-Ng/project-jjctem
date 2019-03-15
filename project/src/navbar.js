@@ -5,7 +5,8 @@ export const Navbar = () => {
   return (
     <nav className="navbar navbar-default">
       <div>
-        <NavLink to={"/game"}>Game</NavLink>
+        <NavLink to={"/home"}>Home</NavLink>
+        <NavLink to={"/signin"}>Signin</NavLink>
         <NavLink to={"/signup"}>Signup</NavLink>
       </div>
     </nav>
