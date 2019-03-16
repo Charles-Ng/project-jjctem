@@ -1,6 +1,6 @@
 import React from "react";
 import Phaser from "phaser";
-import { subscribeToTimer, buttonClicked } from "./api";
+import { subscribeToTimer, buttonClicked, newPlayer } from "./api";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import Race from "./scenes/race";
 export class Game extends React.Component {
@@ -38,6 +38,10 @@ export class Game extends React.Component {
     buttonClicked(clicks => {
       this.setState({ clicks });
     });
+
+    // newPlayer(slat => {
+    //   this.setState({slat});
+    // })
   }
 
   // clicked = () => {
@@ -48,7 +52,8 @@ export class Game extends React.Component {
 
   state = {
     timestamp: "no timestamp yet",
-    clicks: 0
+    clicks: 0,
+    slat:"slat"
   };
   render() {
     return <div id="phaser-game" />;

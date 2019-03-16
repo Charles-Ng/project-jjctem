@@ -1,8 +1,14 @@
 import openSocket from 'socket.io-client';
+import Phaser from "phaser";
 const  socket = openSocket('http://localhost:8000');
 function subscribeToTimer(cb) {
   socket.on('timer', timestamp => cb(null, timestamp));
   socket.emit('subscribeToTimer', 1000);
+}
+
+function newPlayer(cb) {
+    socket.on('slat', slat => cb(slat));
+    socket.emit('newPlayer', {id: 'hello'});
 }
 
 // function connect(cb) {
@@ -25,4 +31,4 @@ function buttonClicked(cb) {
         cb(data);
     });
 }
-export { subscribeToTimer,  buttonClicked};
+export { subscribeToTimer,  buttonClicked, newPlayer};

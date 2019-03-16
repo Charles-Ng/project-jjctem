@@ -1,4 +1,33 @@
-import Phaser from "phaser";
+this.car = this.physics.add.sprite(50, 800, "car");
+this.car.speedtext = null;
+this.angle = this.car.rotation;
+this.car.playername = createText(this, this.car);
+
+this.car.playername.depth = 0;
+// this.car.playername.text = ;
+// this.car.playername.x = 50;
+// this.car.playername.y = 800;
+this.speed = 0;
+this.car.speedtext = createText(this, this.car);
+this.car.setCollideWorldBounds(true);
+  // can seperate this into a fucntion
+socket.emit('newPlayer', {
+  x: this.car.body.x,
+  y: this.car.body.y,
+  angle: this.car.rotation,
+  playerName: {
+    name: this.car.playername,
+    x: this.car.body.x - 57,
+    y: this.car.body.x - 39
+  },
+  speed: {
+    value: this.speed,
+    x: this.speed,
+    y: this.speed
+  }
+});
+
+/*import Phaser from "phaser";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import player from "./player";
 import {createText} from "./isdown.js";
@@ -201,3 +230,4 @@ export default class Race extends Phaser.Scene {
 
    }
 }
+*/ 
