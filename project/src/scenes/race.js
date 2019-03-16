@@ -4,6 +4,8 @@ export default class Race extends Phaser.Scene {
   preload() {
     this.load.image("asphalt", "assets/asphalt.png");
     this.load.image("car", "assets/car.png");
+    this.load.image("tileset", "assets/Tiles/trackSVG.svg");
+    this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track1.json");
   }
   create() {
     // Here we set the bounds of our game world
@@ -18,7 +20,11 @@ export default class Race extends Phaser.Scene {
         groundTiles.push(groundSprite);
       }
     }
-
+    let map = this.make.tilemap({ key: "track" });
+    let tileset = map.addTilesetImage("trackSVG", "tileset");
+    let background = map.createStaticLayer("Tile Layer 2", tileset, 0, 0);
+    let bumper = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
+    bumper.setCollisionByProperty({ collides: true });
     // testing text
     const text = this.add.text(250, 250, "PLEASE FINSIH THIS BETA", {
       backgroundColor: "white",
@@ -27,10 +33,12 @@ export default class Race extends Phaser.Scene {
     });
 
     // create local player(car)
-    this.car = this.physics.add.sprite(50, 800, "car");
+    this.car = this.physics.add.sprite(50, 800, "car").setScale(0.5);
+
     this.angle = this.car.rotation;
     this.speed = 0;
     this.car.setCollideWorldBounds(true);
+    this.physics.add.collider(this.car, bumper);
   }
 
   update() {
