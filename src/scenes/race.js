@@ -3,9 +3,10 @@ import player from "./player";
 import { createText } from "./isdown.js";
 //import createPlayer from "./createPlayer.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
-import openSocket from "socket.io-client";
+import io from "socket.io-client";
+const socket = io('https://forumla0.herokuapp.com/');
 //const s_ip = 'https://forumla0.herokuapp.com/';
-const socket = openSocket("http://localhost:8000");
+//const socket = openSocket("http://localhost:8000");
 //const  socket = openSocket('https://forumla0.herokuapp.com/');
 let otherPlayers = {};
 export default class Race extends Phaser.Scene {
