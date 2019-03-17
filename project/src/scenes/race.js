@@ -5,8 +5,8 @@ import {createText} from "./isdown.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import openSocket from 'socket.io-client';
 //const s_ip = 'https://forumla0.herokuapp.com/';
-//let  socket = openSocket('http://localhost:8000');
-const  socket = openSocket('https://forumla0.herokuapp.com/');
+const socket = openSocket('http://localhost:8000');
+//const  socket = openSocket('https://forumla0.herokuapp.com/');
 let otherPlayers = {};
 export default class Race extends Phaser.Scene {
   preload() {
@@ -69,18 +69,18 @@ export default class Race extends Phaser.Scene {
     // this.physics.add.collider(this.car, bumper);
     socket.on('update-players', playersData => {
       //console.log(playersData);
-      let playersFound = {}
+      let playersFound = {};
       // Iterate over all players
       for (let index in playersData) {
-        const data = playersData[index]
+        const data = playersData[index];
         // In case a player hasn't been created yet
         // We make sure that we won't create a second instance of it
         if (otherPlayers[index] === undefined && index !== socket.id) {
-          const newPlayer = player(data.x, data.y, this)
-          newPlayer.playerName = createText(this, newPlayer)
-          newPlayer.speedText = createText(this, newPlayer)
-          newPlayer.updatePlayerName(data.playerName.name, data.playerName.x, data.playerName.y)
-          otherPlayers[index] = newPlayer
+          const newPlayer = player(data.x, data.y, this);
+          newPlayer.playerName = createText(this, newPlayer);
+          newPlayer.speedText = createText(this, newPlayer);
+          newPlayer.updatePlayerName(data.playerName.name, data.playerName.x, data.playerName.y);
+          otherPlayers[index] = newPlayer;
         }
   
         playersFound[index] = true;
@@ -117,7 +117,8 @@ export default class Race extends Phaser.Scene {
   update() {  
     this.player.drive(this);
     for (let id in otherPlayers) {
-      let player = otherPlayers[id]
+     // console.log(otherPlayers);
+      let player = otherPlayers[id];
       if (player.target_x !== undefined) {
         // Interpolate the player's position
         player.sprite.body.x += (player.target_x - player.sprite.body.x) * 0.30;

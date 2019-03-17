@@ -63,17 +63,17 @@ export default function (x, y, game, socket) {
         // this.sprite.body.velocity.x = this.speed * Math.cos((this.sprite.body.angle - 360) * 0.01745)
         // this.sprite.body.velocity.y = this.speed * Math.sin((this.sprite.body.angle - 360) * 0.01745)
           this.sprite.body.setVelocityX(
-            this.speed * Math.cos((this.sprite.body.angle - 360) * 0.01745)
+            this.speed * Math.cos((this.sprite.body.rotation - 360) * 0.01745)
           );
           this.sprite.body.setVelocityY(
-            this.speed * Math.sin((this.sprite.body.angle - 360) * 0.01745)
+            this.speed * Math.sin((this.sprite.body.rotation - 360) * 0.01745)
           );
         
         // Brings the player's sprite to top
         //game.world.bringToTop(this.sprite)
   
-         this.updatePlayerName()
-        // this.updatePlayerStatusText('speed', this.sprite.body.x - 57, this.sprite.body.y - 39, this.speedText)
+         this.updatePlayerName();
+         this.updatePlayerStatusText('speed', this.sprite.body.x - 57, this.sprite.body.y - 39, this.speedText)
       },
       emitPlayerData () {
         // Emit the 'move-player' event, updating the player's data on the server
