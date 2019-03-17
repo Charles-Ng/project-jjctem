@@ -3,18 +3,20 @@ import player from "./player";
 import { createText } from "./isdown.js";
 //import createPlayer from "./createPlayer.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
-import io from "socket.io-client";
-const socket = io('https://forumla0.herokuapp.com/');
+import openSocket from "socket.io-client";
 //const s_ip = 'https://forumla0.herokuapp.com/';
 //const socket = openSocket("http://localhost:8000");
 //const  socket = openSocket('https://forumla0.herokuapp.com/');
+import io from "socket.io-client";
+const socket = io('https://forumla0.herokuapp.com/');
+//const socket = io("http://localhost:8000");
 let otherPlayers = {};
 export default class Race extends Phaser.Scene {
   preload() {
-    this.load.image("asphalt", "assets/asphalt.png");
-    this.load.image("car", "assets/car.png");
-    // this.load.image("tileset", "assets/Tiles/trackSVG.svg");
-    // this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track1.json");
+    this.load.image("universe", "assets/universe.png");
+    this.load.image("car", "assets/dog.png");
+    this.load.image("tileset", "assets/Tiles/trackSVG.svg");
+    this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track 3.json");
   }
   create() {
     //socket = openSocket(s_ip);
@@ -22,28 +24,35 @@ export default class Race extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
     // creating cursors
     this.cursors = this.input.keyboard.createCursorKeys();
-    // making background
-    let groundTiles = [];
-    for (let i = 0; i <= GAME_HEIGHT / 64 + 1; i++) {
-      for (let j = 0; j <= GAME_WIDTH / 64 + 1; j++) {
-        const groundSprite = this.add.sprite(i * 64, j * 64, "asphalt");
-        groundTiles.push(groundSprite);
-      }
-    }
-    // let map = this.make.tilemap({ key: "track" });
-    // let tileset = map.addTilesetImage("trackSVG", "tileset");
-    // let background = map.createStaticLayer("Tile Layer 2", tileset, 0, 0);
-    // let bumper = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
-    //bumper.setCollisionByProperty({ collides: true });
+    //making background
+    // let groundTiles = [];
+    // for (let i = 0; i <= GAME_HEIGHT / 64 + 1; i++) {
+    //   for (let j = 0; j <= GAME_WIDTH / 64 + 1; j++) {
+    //     const groundSprite = this.add.sprite(i * 64, j * 64, "asphalt");
+    //     groundTiles.push(groundSprite);
+    //   }
+    // }
+    let background_image = this.add.sprite(
+      GAME_WIDTH / 2,
+      GAME_HEIGHT / 2,
+      "universe"
+    );
+    background_image.height = this.GAME_HEIGHT;
+    background_image.width = this.GAME_WIDTH;
+    let map = this.make.tilemap({ key: "track" });
+    let tileset = map.addTilesetImage("trackSVG", "tileset");
+    let background = map.createStaticLayer("Tile Layer 2", tileset, 0, 0);
+    let bumper = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
+    bumper.setCollisionByProperty({ collides: true });
     // testing text
-    const text = this.add.text(250, 250, "PLEASE FINSIH THIS BETA", {
-      backgroundColor: "white",
+    const text = this.add.text(250, 250, "Doggo race", {
+      backgroundColor: "black",
       color: "blue",
       fontSize: 48
     });
     //this.speed = 0;
     // create local player(car)
-    this.player = player(100, 100, this, socket);
+    this.player = player(50, 550, this, socket);
     this.player.playerName = createText(this, this.player.sprite.body);
     this.player.speedText = createText(this, this.player.sprite.body);
 
@@ -67,8 +76,9 @@ export default class Race extends Phaser.Scene {
     });
     // //this.angle = this.car.rotation;
     // this.car.speed = 0;
-    // this.car.setCollideWorldBounds(true);
-    // this.physics.add.collider(this.car, bumper);
+    this.player.sprite.setCollideWorldBounds(true);
+    this.physics.add.collider(this.player.sprite, bumper);
+
     socket.on("update-players", playersData => {
       //console.log(playersData);
       let playersFound = {};

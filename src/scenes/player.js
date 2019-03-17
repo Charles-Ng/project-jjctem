@@ -4,7 +4,7 @@ import Phaser from "phaser";
 export default function(x, y, game, socket) {
   const player = {
     socket,
-    sprite: game.physics.add.sprite(x, y, "car"),
+    sprite: game.physics.add.sprite(x, y, "car").setScale(0.05),
     playerName: null,
     speed: 0,
 
