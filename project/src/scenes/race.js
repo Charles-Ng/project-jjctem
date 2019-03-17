@@ -4,8 +4,9 @@ import {createText} from "./isdown.js";
 import createPlayer from "./createPlayer.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import openSocket from 'socket.io-client';
-//const  socket = openSocket('http://localhost:8000');
-const  socket = openSocket('https://forumla0.herokuapp.com/game');
+const s_ip = 'https://forumla0.herokuapp.com/';
+let  socket = openSocket('http://localhost:8000');
+//const  socket = openSocket('https://forumla0.herokuapp.com/game');
 let otherPlayers = {};
 export default class Race extends Phaser.Scene {
   preload() {
@@ -15,6 +16,7 @@ export default class Race extends Phaser.Scene {
     // this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track1.json");
   }
   create() {
+    socket = io(s_ip);
     // Here we set the bounds of our game world
     this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
     // creating cursors
