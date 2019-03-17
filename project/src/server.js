@@ -7,16 +7,20 @@ const io = require('socket.io')(server);
 
 var clickCount = 0;
 
-const players = {}
+const players = {};
 io.on('connection', (client) => {
   // When a player connects
   client.on('newPlayer', state => {
     console.log('New player joined with state:', state);
-    players[client.id] = state
+    players[client.id] = state;
     // Emit the update-players method in the client side
-    client.emit('update-players', players)
-    //client.emit('slat', client.id);
+    client.emit('update-players', players);
+    //client.emit('slat', client.id);;
   });
+  client.on('disconnect', state => {
+    delete players[client.id];
+    client.emit('update-players', players);
+  })
   client.on('move-player', data => {
     //console.log(data);
     const { x, y, angle, playerName, speed } = data;
@@ -42,7 +46,7 @@ io.on('connection', (client) => {
     }
 
     // Send the data back to the client
-    client.emit('update-players', players)
+    client.emit('update-players', players);
   })
 
     client.on('subscribeToTimer', (interval) => {
