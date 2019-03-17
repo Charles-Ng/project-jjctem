@@ -5,6 +5,6 @@ const router = require('express').Router()
 
 router.get('/', function(req, res, next){
     req.session.destroy(function(err) {
-        res.redirect("index");
+        return res.send("Success");
     })
 });
