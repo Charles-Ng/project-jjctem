@@ -69,7 +69,7 @@ io.on('connection', (client) => {
   // });
   });
 
-  const port = procss.env.PORT||  8000;
+  const port = process.env.PORT||  8000;
   //const port = 'https://forumla0.herokuapp.com/game';
   io.listen(port, function (err) {
     if (err) throw err;
