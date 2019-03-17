@@ -48,4 +48,11 @@ TL;DR
 2. intergrating phaser api with gamepad api
 3. transfering game-logic from server to game-state to all users
 4. 2D
-5. browser app 
+5. browser app
+
+
+# Installation
+## Locally
+1. Run `npm install`
+2. Run `npm start`
+3. In another terminal window run `node ./src/server.js`
