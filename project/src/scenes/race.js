@@ -4,8 +4,8 @@ import {createText} from "./isdown.js";
 import createPlayer from "./createPlayer.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import openSocket from 'socket.io-client';
-const  socket = openSocket('http://localhost:8000');
-//const  socket = openSocket('https://forumla0.herokuapp.com/game');
+//const  socket = openSocket('http://localhost:8000');
+const  socket = openSocket('https://forumla0.herokuapp.com/game');
 let otherPlayers = {};
 export default class Race extends Phaser.Scene {
   preload() {
@@ -81,22 +81,22 @@ export default class Race extends Phaser.Scene {
           otherPlayers[index] = newPlayer
         }
   
-        playersFound[index] = true
+        playersFound[index] = true;
   
         // Update players data
         if (index !== socket.id) {
           // Update players target but not their real position
-          otherPlayers[index].target_x = data.x
-          otherPlayers[index].target_y = data.y
-          otherPlayers[index].target_rotation = data.angle
+          otherPlayers[index].target_x = data.x;
+          otherPlayers[index].target_y = data.y;
+          otherPlayers[index].target_rotation = data.angle;
   
-          otherPlayers[index].playerName.target_x = data.playerName.x
-          otherPlayers[index].playerName.target_y = data.playerName.y
+          otherPlayers[index].playerName.target_x = data.playerName.x;
+          otherPlayers[index].playerName.target_y = data.playerName.y;
   
-          otherPlayers[index].speedText.target_x = data.speed.x
-          otherPlayers[index].speedText.target_y = data.speed.y
+          otherPlayers[index].speedText.target_x = data.speed.x;
+          otherPlayers[index].speedText.target_y = data.speed.y;
   
-          otherPlayers[index].speed = data.speed.value
+          otherPlayers[index].speed = data.speed.value;
         }
       }
   
