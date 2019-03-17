@@ -1,10 +1,12 @@
 import Phaser from "phaser";
 import player from "./player";
-import {createText} from "./isdown.js";
-import createPlayer from "./createPlayer.js";
+import { createText } from "./isdown.js";
+//import createPlayer from "./createPlayer.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
-import openSocket from 'socket.io-client';
-const  socket = openSocket('http://localhost:8000');
+import openSocket from "socket.io-client";
+//const s_ip = 'https://forumla0.herokuapp.com/';
+const socket = openSocket("http://localhost:8000");
+//const  socket = openSocket('https://forumla0.herokuapp.com/');
 let otherPlayers = {};
 export default class Race extends Phaser.Scene {
   preload() {
@@ -14,6 +16,7 @@ export default class Race extends Phaser.Scene {
     // this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track1.json");
   }
   create() {
+    //socket = openSocket(s_ip);
     // Here we set the bounds of our game world
     this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
     // creating cursors
@@ -41,48 +44,69 @@ export default class Race extends Phaser.Scene {
     // create local player(car)
     this.player = player(100, 100, this, socket);
     this.player.playerName = createText(this, this.player.sprite.body);
-   this.player.speedText = createText(this, this.player.sprite.body);
+    this.player.speedText = createText(this, this.player.sprite.body);
+
     // this.car = this.physics.add.sprite(50, 800, "car").setScale(0.5);
-    createPlayer(socket, this.player);
+    //createPlayer(socket, this.player);
+
+    socket.emit("newPlayer", {
+      x: this.player.sprite.body.x,
+      y: this.player.sprite.body.y,
+      angle: this.player.sprite.rotation,
+      playerName: {
+        name: String(socket.id),
+        x: this.player.playerName.x,
+        y: this.player.playerName.y
+      },
+      speed: {
+        value: this.player.speed,
+        x: this.player.speedText.x,
+        y: this.player.speedText.y
+      }
+    });
     // //this.angle = this.car.rotation;
     // this.car.speed = 0;
     // this.car.setCollideWorldBounds(true);
     // this.physics.add.collider(this.car, bumper);
-    socket.on('update-players', playersData => {
+    socket.on("update-players", playersData => {
       //console.log(playersData);
-      let playersFound = {}
+      let playersFound = {};
       // Iterate over all players
       for (let index in playersData) {
-        const data = playersData[index]
+        const data = playersData[index];
         // In case a player hasn't been created yet
         // We make sure that we won't create a second instance of it
         if (otherPlayers[index] === undefined && index !== socket.id) {
-          const newPlayer = player(data.x, data.y, this)
-          newPlayer.playerName = createText(this, newPlayer)
-          newPlayer.speedText = createText(this, newPlayer)
-          newPlayer.updatePlayerName(data.playerName.name, data.playerName.x, data.playerName.y)
-          otherPlayers[index] = newPlayer
+          const newPlayer = player(data.x, data.y, this);
+          newPlayer.playerName = createText(this, newPlayer);
+          newPlayer.speedText = createText(this, newPlayer);
+          newPlayer.updatePlayerName(
+            data.playerName.name,
+            data.playerName.x,
+            data.playerName.y
+          );
+          otherPlayers[index] = newPlayer;
         }
-  
-        playersFound[index] = true
-  
+
+        playersFound[index] = true;
+
         // Update players data
         if (index !== socket.id) {
           // Update players target but not their real position
-          otherPlayers[index].target_x = data.x
-          otherPlayers[index].target_y = data.y
-          otherPlayers[index].target_rotation = data.angle
-  
-          otherPlayers[index].playerName.target_x = data.playerName.x
-          otherPlayers[index].playerName.target_y = data.playerName.y
-  
-          otherPlayers[index].speedText.target_x = data.speed.x
-          otherPlayers[index].speedText.target_y = data.speed.y
-  
-          otherPlayers[index].speed = data.speed.value
+          otherPlayers[index].target_x = data.x;
+          otherPlayers[index].target_y = data.y;
+          otherPlayers[index].target_rotation = data.angle;
+
+          otherPlayers[index].playerName.target_x = data.playerName.x;
+          otherPlayers[index].playerName.target_y = data.playerName.y;
+
+          otherPlayers[index].speedText.target_x = data.speed.x;
+          otherPlayers[index].speedText.target_y = data.speed.y;
+
+          otherPlayers[index].speed = data.speed.value;
         }
       }
-  
+
       // Check if there's no missing players, if there is, delete them
       for (let id in otherPlayers) {
         if (!playersFound[id]) {
@@ -92,33 +116,47 @@ export default class Race extends Phaser.Scene {
           delete otherPlayers[id];
         }
       }
-    })
+    });
   }
 
-  update() {  
+  update() {
     this.player.drive(this);
     for (let id in otherPlayers) {
-      let player = otherPlayers[id]
+      // console.log(otherPlayers);
+      let player = otherPlayers[id];
       if (player.target_x !== undefined) {
         // Interpolate the player's position
-        player.sprite.body.x += (player.target_x - player.sprite.body.x) * 0.30;
-        player.sprite.body.y += (player.target_y - player.sprite.body.y) * 0.30;
-  
+
+        player.sprite.x += (player.target_x - player.sprite.body.x) * 0.3;
+
+        player.sprite.y += (player.target_y - player.sprite.body.y) * 0.3;
+
         let angle = player.target_rotation;
-        let direction = (angle - player.sprite.body.rotation) / (Math.PI * 2);
-        direction -= Math.round(direction);
-        direction *= Math.PI * 2;
-        player.sprite.body.rotation += direction * 0.30;
-  
+
+        // let direction =
+        //   ((angle - player.sprite.rotation) / (Math.PI * 2)) * 0.3;
+        // direction -= Math.round(direction);
+        // direction *= Math.PI * 2;
+        player.sprite.rotation = angle * 0.016;
+
         // Interpolate the player's name position
-        player.playerName.x += (player.playerName.target_x - player.playerName.x) * 0.30;
-        player.playerName.y += (player.playerName.target_y - player.playerName.y) * 0.30;
-  
+        player.playerName.x +=
+          (player.playerName.target_x - player.playerName.x) * 0.3;
+        player.playerName.y +=
+          (player.playerName.target_y - player.playerName.y) * 0.3;
+
         // Interpolate the player's speed text position
-        player.speedText.x += (player.speedText.target_x - player.speedText.x) * 0.30;
-        player.speedText.y += (player.speedText.target_y - player.speedText.y) * 0.30;
-  
-        player.updatePlayerStatusText('speed', player.speedText.x, player.speedText.y, player.speedText);
+        player.speedText.x +=
+          (player.speedText.target_x - player.speedText.x) * 0.3;
+        player.speedText.y +=
+          (player.speedText.target_y - player.speedText.y) * 0.3;
+
+        player.updatePlayerStatusText(
+          "speed",
+          player.speedText.x,
+          player.speedText.y,
+          player.speedText
+        );
       }
     }
     // // drive forward if up is pressed
