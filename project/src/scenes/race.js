@@ -4,8 +4,8 @@ import {createText} from "./isdown.js";
 import createPlayer from "./createPlayer.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import openSocket from 'socket.io-client';
-//const  socket = openSocket('http://localhost:8000');
-const  socket = openSocket('https://forumla0.herokuapp.com/game');
+const  socket = openSocket('http://localhost:8000');
+//const  socket = openSocket('https://forumla0.herokuapp.com/game');
 let otherPlayers = {};
 export default class Race extends Phaser.Scene {
   preload() {
@@ -44,7 +44,23 @@ export default class Race extends Phaser.Scene {
     this.player.playerName = createText(this, this.player.sprite.body);
    this.player.speedText = createText(this, this.player.sprite.body);
     // this.car = this.physics.add.sprite(50, 800, "car").setScale(0.5);
-    createPlayer(socket, this.player);
+    //createPlayer(socket, this.player);
+    
+      socket.emit('newPlayer', {
+        x: this.player.sprite.body.x,
+        y: this.player.sprite.body.y,
+        angle: this.player.sprite.rotation,
+        playerName: {
+          name: String(socket.id),
+          x: this.player.playerName.x,
+          y: this.player.playerName.y
+        },
+        speed: {
+          value: this.player.speed,
+          x: this.player.speedText.x,
+          y: this.player.speedText.y
+        }
+      });
     // //this.angle = this.car.rotation;
     // this.car.speed = 0;
     // this.car.setCollideWorldBounds(true);
