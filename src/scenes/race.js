@@ -10,7 +10,9 @@ import io from "socket.io-client";
 //const  socket = openSocket('https://forumla0.herokuapp.com/');
 // const socket = io("http://localhost:3000");
 //const socket = io('https://forumla0.herokuapp.com/');
-const socket = io("http://localhost:8000");
+// const socket = io("http://formula0.julesyan/com:8000");
+const socket = io('http://localhost:8000');
+
 let otherPlayers = {};
 export default class Race extends Phaser.Scene {
   preload() {
