@@ -26,7 +26,8 @@ export class Signup extends Component {
   submitForm = e => {
     e.preventDefault();
     console.log(this.state);
-    if (this.state.password.length >= 8 && this.state.password.length > 0) {
+    let _this = this;
+    if (_this.state.password.length >= 8 && _this.state.password.length > 0) {
         fetch('http://localhost:3001/user/signup', {
             method: 'POST',
             headers: {
@@ -34,21 +35,20 @@ export class Signup extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: this.state.username,
-                password: this.state.password,
+                username: _this.state.username,
+                password: _this.state.password,
             })
         })
         .then(response => response.json())
         .then(function(data){
-            console.log(data);
-            this.setState({
+            _this.setState({
                 username: "",
-                password: "",
+                password: "" ,
                 content: data.user.username
             });
         });
     } else {
-        this.setState({ password: "" });
+        _this.setState({ password: "" });
         // **** Need to NOT use alerts ****************************************************************************
         alert("Password has to be at least 8 characters!");
     }
@@ -98,7 +98,10 @@ export class Signup extends Component {
             <div className="createAccount">
               <button type="submit">Create Account</button>
             </div>
-             <div className="content_box">{this.state.content}</div>
+
+            <div>
+              {this.state.content}
+            </div>
           </form>
         </div>
       </div>
