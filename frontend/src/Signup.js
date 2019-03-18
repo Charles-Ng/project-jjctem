@@ -13,6 +13,7 @@ export class Signup extends Component {
   state = {
     username: "",
     password: "",
+    content: "",
     redirectState: false
   };
 
@@ -40,10 +41,11 @@ export class Signup extends Component {
         .then(response => response.json())
         .then(function(data){
             console.log(data);
-            this.setState({ username: "", password: "" });
-            return render() {return(
-                <div> <a>{data.user.username}</a> </div>
-            );};
+            this.setState({
+                username: "",
+                password: "",
+                content: data.user.username
+            });
         });
     } else {
         this.setState({ password: "" });
@@ -96,6 +98,7 @@ export class Signup extends Component {
             <div className="createAccount">
               <button type="submit">Create Account</button>
             </div>
+             <div className="content_box">{this.state.content}</div>
           </form>
         </div>
       </div>
