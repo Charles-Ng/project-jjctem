@@ -52,7 +52,16 @@ TL;DR
 
 
 # Installation
+## Database
+The database file is in `backend/db/`. Run this file on your local database. If you do not already, you will have to create an initial database call jjc.
+
 ## Locally
-1. Run `npm install`
-2. Run `npm start`
-3. In another terminal window run `node ./src/server.js`
+This application runs on 3 ports, initial setup is frontend on 3000, backend on 8000, and the MySQL database on 8889 (this will be customizable later). You will need 3 terminal windows to fully run this application.
+1. In the first terminal, navigate to `frontend`.
+2. Run `npm install`.
+3. Run `npm start`.
+4. In the second terminal, navigate to `frontend`.
+5. Run `node ./src/server.js`.
+6. In the third terminal, navigate to `backend`.
+7. Run `npm install`.
+8. Run `node app.js`.
