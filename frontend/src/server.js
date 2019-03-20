@@ -69,11 +69,11 @@ io.on('connection', (client) => {
   // });
   });
 
-  const port = 8000;
+  const port = PORT;
   //const port = 'https://forumla0.herokuapp.com/game';
   io.listen(port, function (err) {
     if (err) throw err;
-    console.log('listening on port 8000');
+    console.log('listening on port '+port);
   });
  // socket.on('disconnect', state => {
   //   delete players[socket.id]
