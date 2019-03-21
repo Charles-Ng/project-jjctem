@@ -23,14 +23,20 @@ io.on("connection", client => {
   });
 
   client.on("finished", data => {
-    const { finish } = data;
-
-    players[client.id].finish = finish;
+    //console.log(players);
+    const { finished } = data;
+    if (players[client.id] === undefined) {
+      return;
+    }
+    players[client.id].finish = true;
+    //console.log(players);
+    
+    client.emit("update-players", players);
   });
 
   client.on("move-player", data => {
     //console.log(data);
-    const { x, y, angle, playerName, speed } = data;
+    const { x, y, angle, playerName, speed, finished } = data;
 
     // If the player is invalid, return
     if (players[client.id] === undefined) {
@@ -51,6 +57,8 @@ io.on("connection", client => {
       x: speed.x,
       y: speed.y
     };
+    players[client.id].finish = finished;
+    
 
     // Send the data back to the client
     client.emit("update-players", players);

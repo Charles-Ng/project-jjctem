@@ -12,7 +12,7 @@ import io from "socket.io-client";
 //const socket = io('https://forumla0.herokuapp.com/');
 // const socket = io("http://formula0.julesyan/com:8000");
 const socket = io("http://localhost:8000");
-
+let counter = 0;
 let otherPlayers = {};
 export default class Race extends Phaser.Scene {
   preload() {
@@ -23,6 +23,7 @@ export default class Race extends Phaser.Scene {
     this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track 3.json");
   }
   create() {
+    let finished = false;
     //socket = openSocket(s_ip);
     // Here we set the bounds of our game world
     this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
@@ -77,7 +78,9 @@ export default class Race extends Phaser.Scene {
         value: this.player.speed,
         x: this.player.speedText.x,
         y: this.player.speedText.y
-      }
+      },
+      finish:false
+
     });
     // //this.angle = this.car.rotation;
     // this.car.speed = 0;
@@ -120,7 +123,8 @@ export default class Race extends Phaser.Scene {
           otherPlayers[index].speedText.target_y = data.speed.y;
 
           otherPlayers[index].speed = data.speed.value;
-        }
+          otherPlayers[index].finish = data.finish;
+        } 
       }
 
       // Check if there's no missing players, if there is, delete them
@@ -133,6 +137,9 @@ export default class Race extends Phaser.Scene {
         }
       }
     });
+    
+    
+    
     this.finishLine = this.physics.add.sprite(775, 510, "finishline");
     this.finishLine.scaleY = 0.1;
     this.finishLine.setPosition(770, 510);
@@ -177,19 +184,27 @@ export default class Race extends Phaser.Scene {
           player.speedText
         );
 
-        if (player.finish == true) {
-          this.text.setText("you lose");
+        if (player.finish === true) {
+          //console.log('what');
+          this.text.setText('YOU LOSE');
         }
       }
     }
-
-    if (this.player.sprite.x == this.finishLine.x) {
+   
+    if (this.player.sprite.x == this.finishLine.x ) {
       // add what u wanna do here!!!!!!!!
-      socket.emit("finsihed", {
-        finish: true
-      });
-      this.text.setText("FINSIH");
-    }
+      if (counter == 0) {
+        socket.emit("finished", {
+          finish: true
+        });
+        this.text.setText("YOU WIN");
+        this.player.playerFinished();
+        counter++;
+      }
+      
+      
+      
+    } 
     // // drive forward if up is pressed
     // if (this.cursors.up.isDown && this.car.speed <= 400) {
     //   this.car.speed += 20;

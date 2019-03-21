@@ -92,7 +92,8 @@ export default function(x, y, game, socket) {
           value: this.speed,
           x: this.speedText.x,
           y: this.speedText.y
-        }
+        },
+        finish:false
       });
     },
     updatePlayerName(
@@ -120,8 +121,8 @@ export default function(x, y, game, socket) {
       //game.world.bringToTop(text)
     },
 
-    playerFinsihed() {
-      this.finsih = true;
+    playerFinished() {
+      this.finish = true;
     }
   };
   return player;
