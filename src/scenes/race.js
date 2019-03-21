@@ -176,11 +176,18 @@ export default class Race extends Phaser.Scene {
           player.speedText.y,
           player.speedText
         );
+
+        if (player.finish == true) {
+          this.text.setText("you lose");
+        }
       }
     }
 
     if (this.player.sprite.x == this.finishLine.x) {
       // add what u wanna do here!!!!!!!!
+      socket.emit("finsihed", {
+        finish: true
+      });
       this.text.setText("FINSIH");
     }
     // // drive forward if up is pressed

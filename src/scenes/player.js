@@ -7,7 +7,7 @@ export default function(x, y, game, socket) {
     sprite: game.physics.add.sprite(x, y, "car").setScale(0.05),
     playerName: null,
     speed: 0,
-
+    finish: false,
     speedText: null,
     drive(game) {
       //this.
@@ -76,6 +76,7 @@ export default function(x, y, game, socket) {
         this.speedText
       );
     },
+
     emitPlayerData() {
       // Emit the 'move-player' event, updating the player's data on the server
       socket.emit("move-player", {
@@ -117,6 +118,10 @@ export default function(x, y, game, socket) {
       text.y = y;
       text.text = `${capitalizedStatus}: ${parseInt(this.newText)}`;
       //game.world.bringToTop(text)
+    },
+
+    playerFinsihed() {
+      this.finsih = true;
     }
   };
   return player;
