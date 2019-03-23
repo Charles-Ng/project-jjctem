@@ -9,14 +9,13 @@ export class Home extends React.Component {
     this.props.history.push(path);
   }
 
-  
+
 
   render() {
     return (
 
       <div>
         <h3>Home</h3>
-
       </div>
 
     );
