@@ -28,7 +28,8 @@ export class Signup extends Component {
     console.log(this.state);
     let _this = this;
     if (_this.state.password.length >= 8 && _this.state.password.length > 0) {
-        fetch('http://localhost:3001/user/signup', {
+        // fetch('http://formula0.julesyan.com/api/user/signup', {
+        fetch('http://formula0.julesyan.com/api/user/signup', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -41,6 +42,7 @@ export class Signup extends Component {
         })
         .then(response => response.json())
         .then(function(data){
+            console.log(data);
             _this.setState({
                 username: "",
                 password: "" ,
