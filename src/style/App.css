@@ -36,6 +36,13 @@ F1Regular and F1RegularItalic
   font-style: normal;
 }
 
+::selection {
+  background: pink; /* WebKit/Blink Browsers */
+}
+
+::-moz-selection {
+  background: pink; /* Gecko Browsers */
+}
 
 body{
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

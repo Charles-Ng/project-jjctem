@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./style/user.css";
 
 import {
   Link,
@@ -40,42 +41,35 @@ export class Signin extends Component {
     // }
 
     return (
-      <div className="wrapper">
-        <div className="form-wrapper">
-          <h1>Login</h1>
-          <form
-            id="signin-account-form"
-            onSubmit={this.submitForm.bind(this)}
-            noValidate
-          >
-            <div className="username">
-              <label htmlFor="username"> username </label>
-              <input
-                type="text"
-                placeholder="Username"
-                name="username"
-                value={this.state.username}
-                onChange={e => this.onChange(e)}
-              />
-            </div>
+        <div className="user-form">
+            <h1>Sign In</h1>
 
-            <div className="password">
-              <label htmlFor="password"> Password </label>
-              <input
-                placeholder="Password"
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={e => this.onChange(e)}
-              />
-            </div>
+            <form id="signin-account-form"
+                  onSubmit={this.submitForm.bind(this)}
+                  noValidate>
+                <div className="username">
+                    <label htmlFor="username">Username</label>
+                    <input type="text"
+                           placeholder="Username"
+                           name="username"
+                           value={this.state.username}
+                           onChange={e=>this.onChange(e)}
+                    />
+                </div>
 
-            <div className="signin_account">
-              <button type="submit">Login</button>
-            </div>
-          </form>
+                <div className="password">
+                    <label htmlFor="password">Password</label>
+                    <input type="password"
+                           placeholder="Password"
+                           name="password"
+                           value={this.state.password}
+                           onChange={e=>this.onChange(e)}
+                    />
+                </div>
+
+                <button type="submit">Sign In</button>
+            </form>
         </div>
-      </div>
     );
   }
 }
