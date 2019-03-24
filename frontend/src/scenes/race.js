@@ -10,19 +10,20 @@ import io from "socket.io-client";
 //const  socket = openSocket('https://forumla0.herokuapp.com/');
 // const socket = io("http://localhost:3000");
 //const socket = io('https://forumla0.herokuapp.com/');
-const socket = io("http://formula0.julesyan.com", {path:'/socket'});
-console.log(socket);
-// const socket = io('http://localhost:8000');
-
+// const socket = io("http://formula0.julesyan.com", {path:'/socket'});
+const socket = io("http://localhost:8000");
+let counter = 0;
 let otherPlayers = {};
 export default class Race extends Phaser.Scene {
   preload() {
     this.load.image("universe", "assets/universe.png");
+    this.load.image("finishline", "assets/redline.png");
     this.load.image("car", "assets/dog.png");
     this.load.image("tileset", "assets/Tiles/trackSVG.svg");
     this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track 3.json");
   }
   create() {
+    let finished = false;
     //socket = openSocket(s_ip);
     // Here we set the bounds of our game world
     this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
@@ -49,13 +50,14 @@ export default class Race extends Phaser.Scene {
     let bumper = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
     bumper.setCollisionByProperty({ collides: true });
     // testing text
-    const text = this.add.text(250, 250, "Doggo race", {
+    this.text = this.add.text(250, 250, "Doggo race", {
       backgroundColor: "black",
       color: "blue",
       fontSize: 48
     });
     //this.speed = 0;
     // create local player(car)
+
     this.player = player(50, 550, this, socket);
     this.player.playerName = createText(this, this.player.sprite.body);
     this.player.speedText = createText(this, this.player.sprite.body);
@@ -76,7 +78,9 @@ export default class Race extends Phaser.Scene {
         value: this.player.speed,
         x: this.player.speedText.x,
         y: this.player.speedText.y
-      }
+      },
+      finish:false
+
     });
     // //this.angle = this.car.rotation;
     // this.car.speed = 0;
@@ -119,6 +123,7 @@ export default class Race extends Phaser.Scene {
           otherPlayers[index].speedText.target_y = data.speed.y;
 
           otherPlayers[index].speed = data.speed.value;
+          otherPlayers[index].finish = data.finish;
         }
       }
 
@@ -132,6 +137,12 @@ export default class Race extends Phaser.Scene {
         }
       }
     });
+
+
+
+    this.finishLine = this.physics.add.sprite(775, 510, "finishline");
+    this.finishLine.scaleY = 0.1;
+    this.finishLine.setPosition(770, 510);
   }
 
   update() {
@@ -172,7 +183,27 @@ export default class Race extends Phaser.Scene {
           player.speedText.y,
           player.speedText
         );
+
+        if (player.finish === true) {
+          //console.log('what');
+          this.text.setText('YOU LOSE');
+        }
       }
+    }
+
+    if (this.player.sprite.x == this.finishLine.x ) {
+      // add what u wanna do here!!!!!!!!
+      if (counter == 0) {
+        socket.emit("finished", {
+          finish: true
+        });
+        this.text.setText("YOU WIN");
+        this.player.playerFinished();
+        counter++;
+      }
+
+
+
     }
     // // drive forward if up is pressed
     // if (this.cursors.up.isDown && this.car.speed <= 400) {
