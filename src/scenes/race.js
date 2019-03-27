@@ -14,6 +14,8 @@ import io from "socket.io-client";
 const socket = io("http://localhost:8000");
 let counter = 0;
 let otherPlayers = {};
+let countdown = 3;
+let startcount = 0;
 export default class Race extends Phaser.Scene {
   preload() {
     this.load.image("universe", "assets/universe.png");
@@ -23,7 +25,6 @@ export default class Race extends Phaser.Scene {
     this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track 3.json");
   }
   create() {
-    let finished = false;
     //socket = openSocket(s_ip);
     // Here we set the bounds of our game world
     this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
@@ -79,8 +80,8 @@ export default class Race extends Phaser.Scene {
         x: this.player.speedText.x,
         y: this.player.speedText.y
       },
-      finish:false
-
+      finish: false,
+      start: false
     });
     // //this.angle = this.car.rotation;
     // this.car.speed = 0;
@@ -124,7 +125,8 @@ export default class Race extends Phaser.Scene {
 
           otherPlayers[index].speed = data.speed.value;
           otherPlayers[index].finish = data.finish;
-        } 
+          otherPlayers[index].start = data.start;
+        }
       }
 
       // Check if there's no missing players, if there is, delete them
@@ -137,19 +139,66 @@ export default class Race extends Phaser.Scene {
         }
       }
     });
-    
-    
-    
+
     this.finishLine = this.physics.add.sprite(775, 510, "finishline");
     this.finishLine.scaleY = 0.1;
     this.finishLine.setPosition(770, 510);
+    this.cameras.main.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    this.cameras.main.startFollow(this.player.sprite);
+    this.cameras.main.setZoom(1.5);
+
+    this.startLine = this.physics.add.sprite(150, 550, "finishline");
+    this.startLine.scaleY = 0.1;
+    this.startLine.setImmovable();
+    this.physics.add.collider(this.player.sprite, this.startLine);
+
+    this.start_text = this.add
+      .text(205, 250, "Start!", {
+        backgroundColor: "black",
+        color: "red",
+        fontSize: 100
+      })
+      .setInteractive()
+      .on("pointerdown", () =>
+        this.setStart(this.start_text, this.player, this)
+      );
+  }
+
+  setStart(text, player, game) {
+    socket.emit("started", {
+      start: true
+    });
+
+    player.playerStarted();
+    game.start_timer(text, game);
+  }
+
+  start_timer(text, game) {
+    game.time.addEvent({
+      delay: 1000,
+      callback: function() {
+        game.displayTimer(text, game);
+      },
+      repeat: 4
+    });
+  }
+  displayTimer(text, game) {
+    if (countdown >= 0) {
+      text.setText(countdown);
+      countdown = countdown - 1;
+    } else {
+      text.destroy();
+      game.startLine.destroy();
+    }
   }
 
   update() {
     this.player.drive(this);
-    for (let id in otherPlayers) {
+
+    for (let i in otherPlayers) {
       // console.log(otherPlayers);
-      let player = otherPlayers[id];
+      let player = otherPlayers[i];
+
       if (player.target_x !== undefined) {
         // Interpolate the player's position
 
@@ -184,27 +233,33 @@ export default class Race extends Phaser.Scene {
           player.speedText
         );
 
+        if (player.start === true) {
+          if (startcount == 0) {
+            this.start_timer(this.start_text, this);
+          }
+          startcount++;
+        }
+
         if (player.finish === true) {
-          //console.log('what');
-          this.text.setText('YOU LOSE');
+          this.text.setText("YOU LOSE");
         }
       }
     }
-   
-    if (this.player.sprite.x == this.finishLine.x ) {
+
+    if (this.player.sprite.x > this.finishLine.x - 5) {
       // add what u wanna do here!!!!!!!!
+
       if (counter == 0) {
         socket.emit("finished", {
           finish: true
         });
+
         this.text.setText("YOU WIN");
         this.player.playerFinished();
         counter++;
       }
-      
-      
-      
-    } 
+    }
+
     // // drive forward if up is pressed
     // if (this.cursors.up.isDown && this.car.speed <= 400) {
     //   this.car.speed += 20;
