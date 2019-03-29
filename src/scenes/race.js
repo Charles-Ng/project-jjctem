@@ -16,13 +16,14 @@ let counter = 0;
 let otherPlayers = {};
 let countdown = 3;
 let startcount = 0;
+let second = 0;
 export default class Race extends Phaser.Scene {
   preload() {
     this.load.image("universe", "assets/universe.png");
     this.load.image("finishline", "assets/redline.png");
     this.load.image("car", "assets/dog.png");
     this.load.image("tileset", "assets/Tiles/trackSVG.svg");
-    this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track 3.json");
+    this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track Final.json");
   }
   create() {
     //socket = openSocket(s_ip);
@@ -46,12 +47,12 @@ export default class Race extends Phaser.Scene {
     background_image.height = this.GAME_HEIGHT;
     background_image.width = this.GAME_WIDTH;
     let map = this.make.tilemap({ key: "track" });
-    let tileset = map.addTilesetImage("trackSVG", "tileset");
+    let tileset = map.addTilesetImage("bumper", "tileset");
     let background = map.createStaticLayer("Tile Layer 2", tileset, 0, 0);
     let bumper = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
     bumper.setCollisionByProperty({ collides: true });
     // testing text
-    this.text = this.add.text(250, 250, "Doggo race", {
+    this.text = this.add.text(4800, 100, "Doggo race", {
       backgroundColor: "black",
       color: "blue",
       fontSize: 48
@@ -140,18 +141,23 @@ export default class Race extends Phaser.Scene {
       }
     });
 
-    this.finishLine = this.physics.add.sprite(775, 510, "finishline");
+    this.finishLine = this.physics.add.sprite(4975, 320, "finishline");
     this.finishLine.scaleY = 0.1;
-    this.finishLine.setPosition(770, 510);
-    this.cameras.main.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    this.finishLine.setPosition(4975, 320);
+    this.cameras.main.setBounds(0, 0, GAME_WIDTH + 100, GAME_HEIGHT);
     this.cameras.main.startFollow(this.player.sprite);
-    this.cameras.main.setZoom(1.5);
+    this.cameras.main.setZoom(1);
 
     this.startLine = this.physics.add.sprite(150, 550, "finishline");
     this.startLine.scaleY = 0.1;
     this.startLine.setImmovable();
     this.physics.add.collider(this.player.sprite, this.startLine);
 
+    this.timer = this.add
+      .text(32, 32, { colour: "white", fontSize: 100 })
+      .setScrollFactor(0);
+
+    this.second = 0;
     this.start_text = this.add
       .text(205, 250, "Start!", {
         backgroundColor: "black",
@@ -183,16 +189,39 @@ export default class Race extends Phaser.Scene {
     });
   }
   displayTimer(text, game) {
-    if (countdown >= 0) {
+    if (countdown > 0) {
       text.setText(countdown);
+      countdown = countdown - 1;
+    } else if (countdown == 0) {
+      text.setText("GO");
       countdown = countdown - 1;
     } else {
       text.destroy();
       game.startLine.destroy();
+
+      game.timedEvent = game.time.addEvent({
+        delay: 1000,
+        callback: function() {
+          game.second += 1;
+        },
+        loop: true
+      });
     }
   }
 
   update() {
+    let won = true;
+    if (this.timedEvent != undefined) {
+      this.timer.setText(
+        "Time: " +
+          this.second +
+          this.timedEvent
+            .getProgress()
+            .toString()
+            .substr(1, 3)
+      );
+    } else this.timer.setText("Time: 0");
+
     this.player.drive(this);
 
     for (let i in otherPlayers) {
@@ -240,13 +269,16 @@ export default class Race extends Phaser.Scene {
           startcount++;
         }
 
-        if (player.finish === true) {
-          this.text.setText("YOU LOSE");
+        if (player.finish == true) {
+          if (this.player.finish != true) {
+            this.text.setText("YOU LOST");
+            won = false;
+          }
         }
       }
     }
 
-    if (this.player.sprite.x > this.finishLine.x - 5) {
+    if (this.player.sprite.x > this.finishLine.x - 10) {
       // add what u wanna do here!!!!!!!!
 
       if (counter == 0) {
@@ -254,8 +286,12 @@ export default class Race extends Phaser.Scene {
           finish: true
         });
 
-        this.text.setText("YOU WIN");
+        if (won == true) {
+          this.text.setText("YOU WIN");
+        }
+
         this.player.playerFinished();
+        this.timedEvent.paused = true;
         counter++;
       }
     }
