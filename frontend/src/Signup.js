@@ -29,7 +29,7 @@ export class Signup extends Component {
     let _this = this;
     if (_this.state.password.length >= 8 && _this.state.password.length > 0) {
         // fetch('http://formula0.julesyan.com/api/user/signup', {
-        fetch('http://formula0.julesyan.com/api/user/signup', {
+        fetch('https://formula0.julesyan.com/api/user/signup', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
