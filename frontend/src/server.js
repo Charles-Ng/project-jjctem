@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 app.use(express.static("project"));
-var server = require("https").Server(app);
+var server = require("http").Server(app);
 
 const io = require("socket.io")(server);
 
@@ -100,8 +100,9 @@ const port = 8081;
 //const port = 'https://forumla0.herokuapp.com/game';
 io.listen(port, function(err) {
   if (err) throw err;
-  console.log("listening on port 8081");
 });
+
+console.log("listening on port 8081");
 // socket.on('disconnect', state => {
 //   delete players[socket.id]
 //   io.emit('update-players', players)
