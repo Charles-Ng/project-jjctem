@@ -1,16 +1,14 @@
 const express = require("express");
 const app = express();
 app.use(express.static("project"));
-var server = require("https").Server(app);
+var server = require("http").Server(app);
 
 const io = require("socket.io")(server);
-
 
 var clickCount = 0;
 
 const players = {};
 io.on("connection", client => {
-    console.log("sfs");
   // When a player connects
   client.on("newPlayer", state => {
     console.log("New player joined with state:", state);
@@ -26,23 +24,11 @@ io.on("connection", client => {
 
   client.on("finished", data => {
     //console.log(players);
-    const { finish } = data;
+    const { finished } = data;
     if (players[client.id] === undefined) {
       return;
     }
-    players[client.id].finish = finish;
-    //console.log(players);
-
-    client.emit("update-players", players);
-  });
-
-  client.on("started", data => {
-    //console.log(players);
-    const { start } = data;
-    if (players[client.id] === undefined) {
-      return;
-    }
-    players[client.id].start = start;
+    players[client.id].finish = true;
     //console.log(players);
 
     client.emit("update-players", players);
@@ -50,7 +36,7 @@ io.on("connection", client => {
 
   client.on("move-player", data => {
     //console.log(data);
-    const { x, y, angle, playerName, speed, finish, start } = data;
+    const { x, y, angle, playerName, speed, finished } = data;
 
     // If the player is invalid, return
     if (players[client.id] === undefined) {
@@ -71,8 +57,8 @@ io.on("connection", client => {
       x: speed.x,
       y: speed.y
     };
-    players[client.id].finish = finish;
-    players[client.id].start = start;
+    players[client.id].finish = finished;
+
 
     // Send the data back to the client
     client.emit("update-players", players);
@@ -98,14 +84,12 @@ io.on("connection", client => {
   // });
 });
 
-const port = 8081;
+const port = 8000;
 //const port = 'https://forumla0.herokuapp.com/game';
 io.listen(port, function(err) {
   if (err) throw err;
-  console.log("listening on port 8081");
+  console.log("listening on port 8000");
 });
-console.log('socket io is listening on port ', 8081);
-
 // socket.on('disconnect', state => {
 //   delete players[socket.id]
 //   io.emit('update-players', players)
