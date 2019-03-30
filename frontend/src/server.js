@@ -102,13 +102,12 @@ io.on("connection", client => {
 
 const port = 8081;
 //const port = 'https://forumla0.herokuapp.com/game';
-io.listen(port);
+io.listen(port, function(err) {
+  if (err) throw err;
+  console.log("listening on port 8081");
+});
 console.log('socket io is listening on port ', 8081);
 
-// io.listen(port, function(err) {
-//   if (err) throw err;
-//   console.log("listening on port 8081");
-// });
 // socket.on('disconnect', state => {
 //   delete players[socket.id]
 //   io.emit('update-players', players)
