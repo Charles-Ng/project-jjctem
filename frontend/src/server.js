@@ -2,12 +2,9 @@ const express = require("express");
 const fs = require("fs");
 const app = express();
 app.use(express.static("project"));
-var server = require("https").Server(app);
+var server = require("http").Server(app);
 // var server = app.listen(8000);
 const io = require("socket.io")(server);
-
-var privateKey = fs.readFileSync('/etc/letsencrypt/live/julesyan.com/privkey.pem').toString();
-var certificate = fs.readFileSync('/etc/letsencrypt/live/julesyan.com/fullchain.pem').toString();
 
 var clickCount = 0;
 
@@ -102,11 +99,10 @@ io.on("connection", client => {
 
 const port = 8081;
 //const port = 'https://forumla0.herokuapp.com/game';
-// io.listen(port, function(err) {
-//   if (err) throw err;
-//   console.log("listening on port 8081");
-// });
-io.listen(port, {key:privateKey,cert:certificate});
+io.listen(port, function(err) {
+  if (err) throw err;
+  console.log("listening on port 8081");
+});
 // server.listen(port, '159.203.38.244');
 // socket.on('disconnect', state => {
 //   delete players[socket.id]
