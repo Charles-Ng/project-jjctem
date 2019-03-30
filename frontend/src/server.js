@@ -12,6 +12,7 @@ var clickCount = 0;
 
 const players = {};
 io.on("connection", client => {
+    console.log("sfs");
   // When a player connects
   client.on("newPlayer", state => {
     console.log("New player joined with state:", state);
