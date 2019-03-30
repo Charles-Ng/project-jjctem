@@ -3,7 +3,7 @@ import Phaser from "phaser";
 // const socket = openSocket("https://formula0.julesyan.com", {path:'/socket', secure: true, reconnect: true, rejectUnauthorized: false});
 // const socket = openSocket.connect("https://formula0.julesyan.com", { path:'/socket',secure: true, reconnect: true, rejectUnauthorized: false });
 // const  socket = openSocket("https://formula0.julesyan.com", {path:'/socket'});
-const socket = io.connect("https://159.203.38.244:8000");
+const socket = openSocket.connect("https://159.203.38.244:8000");
 
 function subscribeToTimer(cb) {
   socket.on('timer', timestamp => cb(null, timestamp));
