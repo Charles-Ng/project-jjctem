@@ -17,12 +17,13 @@
     "socket.io": "^2.2.0"
   },
   "scripts": {
-    // "start_something": "concurrently 'npm run start' 'npm run server'",
+   
     "start": "react-scripts start",
+    "heroku-postbuild": "cd src && node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    //"server": "node src/server.js"
+    "eject": "react-scripts eject"
+    
   },
   "eslintConfig": {
     "extends": "react-app"
