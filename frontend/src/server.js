@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const http = require("https").createServer(app);
+const http = require("http").createServer(app);
 const io = require("socket.io").listen(http);
 app.use(express.static("project"));
 // var server = require("https").Server(app);
