@@ -11,7 +11,7 @@ import { checkSocketIoConnect } from "./../api";
 //const  socket = openSocket('https://forumla0.herokuapp.com/');
 // const socket = io("http://localhost:3000");
 //const socket = io('https://forumla0.herokuapp.com/');
-const socket = io("https://formula0.julesyan.com", {path:'/socket', secure: true, reconnect: true, rejectUnauthorized: false});
+// const socket = io("https://formula0.julesyan.com", {path:'/socket', secure: true, reconnect: true, rejectUnauthorized: false});
 // const socket = io.connect("https://formula0.julesyan.com:8081", { secure: true, reconnect: true, rejectUnauthorized: false });
 // const socket = io("http://localhost:8081");
 let counter = 0;
