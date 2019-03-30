@@ -5,6 +5,7 @@ import { createText } from "./isdown.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import openSocket from "socket.io-client";
 import io from "socket.io-client";
+import { socket } from "./api";
 //const s_ip = 'https://forumla0.herokuapp.com/';
 // const socket = openSocket("http://localhost:8000");
 //const  socket = openSocket('https://forumla0.herokuapp.com/');

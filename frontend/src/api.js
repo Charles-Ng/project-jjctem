@@ -73,4 +73,4 @@ function checkSocketIoConnect() {
     });
 }
 
-export { subscribeToTimer,  buttonClicked, newPlayer, checkSocketIoConnect};
+export { socket, subscribeToTimer,  buttonClicked, newPlayer, checkSocketIoConnect};
