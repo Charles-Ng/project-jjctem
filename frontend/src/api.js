@@ -36,7 +36,7 @@ function buttonClicked(cb) {
 function checkSocketIoConnect() {
     return new Promise(function(resolve, reject) {
         var errAlready = false;
-        var timeout = timeout || 5000;
+        var timeout = timeout || 50000;
 
         // success
         socket.on("connect", function() {
