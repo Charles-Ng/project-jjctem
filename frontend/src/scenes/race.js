@@ -18,7 +18,7 @@ let otherPlayers = {};
 function checkSocketIoConnect() {
     return new Promise(function(resolve, reject) {
         var errAlready = false;
-        var timeout = timeout || 5000;
+        var timeout = timeout || 50000;
 
         // success
         socket.on("connect", function() {
@@ -112,78 +112,78 @@ export default class Race extends Phaser.Scene {
     // this.car = this.physics.add.sprite(50, 800, "car").setScale(0.5);
     //createPlayer(socket, this.player);
 
-    // socket.emit("newPlayer", {
-    //   x: this.player.sprite.body.x,
-    //   y: this.player.sprite.body.y,
-    //   angle: this.player.sprite.rotation,
-    //   playerName: {
-    //     name: String(socket.id),
-    //     x: this.player.playerName.x,
-    //     y: this.player.playerName.y
-    //   },
-    //   speed: {
-    //     value: this.player.speed,
-    //     x: this.player.speedText.x,
-    //     y: this.player.speedText.y
-    //   },
-    //   finish:false
-    //
-    // });
+    socket.emit("newPlayer", {
+      x: this.player.sprite.body.x,
+      y: this.player.sprite.body.y,
+      angle: this.player.sprite.rotation,
+      playerName: {
+        name: String(socket.id),
+        x: this.player.playerName.x,
+        y: this.player.playerName.y
+      },
+      speed: {
+        value: this.player.speed,
+        x: this.player.speedText.x,
+        y: this.player.speedText.y
+      },
+      finish:false
+
+    });
     // //this.angle = this.car.rotation;
     // this.car.speed = 0;
     this.player.sprite.setCollideWorldBounds(true);
     this.physics.add.collider(this.player.sprite, bumper);
 
-    // socket.on("update-players", playersData => {
-    //   //console.log(playersData);
-    //   let playersFound = {};
-    //   // Iterate over all players
-    //   for (let index in playersData) {
-    //     const data = playersData[index];
-    //     // In case a player hasn't been created yet
-    //     // We make sure that we won't create a second instance of it
-    //     if (otherPlayers[index] === undefined && index !== socket.id) {
-    //       const newPlayer = player(data.x, data.y, this);
-    //       newPlayer.playerName = createText(this, newPlayer);
-    //       newPlayer.speedText = createText(this, newPlayer);
-    //       newPlayer.updatePlayerName(
-    //         data.playerName.name,
-    //         data.playerName.x,
-    //         data.playerName.y
-    //       );
-    //       otherPlayers[index] = newPlayer;
-    //     }
-    //
-    //     playersFound[index] = true;
-    //
-    //     // Update players data
-    //     if (index !== socket.id) {
-    //       // Update players target but not their real position
-    //       otherPlayers[index].target_x = data.x;
-    //       otherPlayers[index].target_y = data.y;
-    //       otherPlayers[index].target_rotation = data.angle;
-    //
-    //       otherPlayers[index].playerName.target_x = data.playerName.x;
-    //       otherPlayers[index].playerName.target_y = data.playerName.y;
-    //
-    //       otherPlayers[index].speedText.target_x = data.speed.x;
-    //       otherPlayers[index].speedText.target_y = data.speed.y;
-    //
-    //       otherPlayers[index].speed = data.speed.value;
-    //       otherPlayers[index].finish = data.finish;
-    //     }
-    //   }
-    //
-    //   // Check if there's no missing players, if there is, delete them
-    //   for (let id in otherPlayers) {
-    //     if (!playersFound[id]) {
-    //       otherPlayers[id].sprite.destroy();
-    //       otherPlayers[id].playerName.destroy();
-    //       otherPlayers[id].speedText.destroy();
-    //       delete otherPlayers[id];
-    //     }
-    //   }
-    // });
+    socket.on("update-players", playersData => {
+      //console.log(playersData);
+      let playersFound = {};
+      // Iterate over all players
+      for (let index in playersData) {
+        const data = playersData[index];
+        // In case a player hasn't been created yet
+        // We make sure that we won't create a second instance of it
+        if (otherPlayers[index] === undefined && index !== socket.id) {
+          const newPlayer = player(data.x, data.y, this);
+          newPlayer.playerName = createText(this, newPlayer);
+          newPlayer.speedText = createText(this, newPlayer);
+          newPlayer.updatePlayerName(
+            data.playerName.name,
+            data.playerName.x,
+            data.playerName.y
+          );
+          otherPlayers[index] = newPlayer;
+        }
+
+        playersFound[index] = true;
+
+        // Update players data
+        if (index !== socket.id) {
+          // Update players target but not their real position
+          otherPlayers[index].target_x = data.x;
+          otherPlayers[index].target_y = data.y;
+          otherPlayers[index].target_rotation = data.angle;
+
+          otherPlayers[index].playerName.target_x = data.playerName.x;
+          otherPlayers[index].playerName.target_y = data.playerName.y;
+
+          otherPlayers[index].speedText.target_x = data.speed.x;
+          otherPlayers[index].speedText.target_y = data.speed.y;
+
+          otherPlayers[index].speed = data.speed.value;
+          otherPlayers[index].finish = data.finish;
+        }
+      }
+
+      // Check if there's no missing players, if there is, delete them
+      for (let id in otherPlayers) {
+        if (!playersFound[id]) {
+          otherPlayers[id].sprite.destroy();
+          otherPlayers[id].playerName.destroy();
+          otherPlayers[id].speedText.destroy();
+          delete otherPlayers[id];
+        }
+      }
+    });
 
 
 
@@ -241,9 +241,9 @@ export default class Race extends Phaser.Scene {
     if (this.player.sprite.x == this.finishLine.x ) {
       // add what u wanna do here!!!!!!!!
       if (counter == 0) {
-        // socket.emit("finished", {
-        //   finish: true
-        // });
+        socket.emit("finished", {
+          finish: true
+        });
         this.text.setText("YOU WIN");
         this.player.playerFinished();
         counter++;
