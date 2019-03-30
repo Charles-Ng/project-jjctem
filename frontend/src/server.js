@@ -105,7 +105,7 @@ const port = 8081;
 //   if (err) throw err;
 //   console.log("listening on port 8081");
 // });
-io.listen(port, {{key:privateKey,cert:certificate}})
+io.listen(port, {key:privateKey,cert:certificate});
 // server.listen(port, '159.203.38.244');
 // socket.on('disconnect', state => {
 //   delete players[socket.id]
