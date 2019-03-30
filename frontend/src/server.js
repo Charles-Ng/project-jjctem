@@ -84,7 +84,7 @@ io.on("connection", client => {
   // });
 });
 
-const port = 8000;
+const port = 8081;
 //const port = 'https://forumla0.herokuapp.com/game';
 io.listen(port, function(err) {
   if (err) throw err;
