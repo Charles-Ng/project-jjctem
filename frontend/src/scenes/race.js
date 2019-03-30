@@ -64,12 +64,16 @@ export default class Race extends Phaser.Scene {
     this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track 3.json");
   }
   create() {
-      checkSocketIoConnect().then(function() {
-          console.log("success");
-      }, function(reason) {
-          console.log("failure");
-          console.log(reason);
-      });
+
+
+          checkSocketIoConnect().then(function() {
+              console.log("success");
+          }, function(reason) {
+              console.log("failure");
+              console.log(reason);
+          });
+
+          
     let finished = false;
     //socket = openSocket(s_ip);
     // Here we set the bounds of our game world
@@ -193,6 +197,14 @@ export default class Race extends Phaser.Scene {
   }
 
   update() {
+
+          checkSocketIoConnect().then(function() {
+              console.log("success");
+          }, function(reason) {
+              console.log("failure");
+              console.log(reason);
+          });
+
     this.player.drive(this);
     for (let id in otherPlayers) {
       // console.log(otherPlayers);
