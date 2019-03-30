@@ -68,6 +68,7 @@ export default class Race extends Phaser.Scene {
           console.log("success");
       }, function(reason) {
           console.log("failure");
+          console.log(reason);
       });
     let finished = false;
     //socket = openSocket(s_ip);
