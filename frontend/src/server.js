@@ -1,5 +1,5 @@
-import fs from 'fs';
 const express = require("express");
+const fs = require("fs");
 const app = express();
 app.use(express.static("project"));
 var server = require("https").Server(app);
