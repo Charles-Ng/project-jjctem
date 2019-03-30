@@ -19,7 +19,7 @@ let otherPlayers = {};
 function checkSocketIoConnect() {
     return new Promise(function(resolve, reject) {
         var errAlready = false;
-        var timeout = timeout || 50000;
+        var timeout = timeout || 5000;
 
         // success
         socket.on("connect", function() {
