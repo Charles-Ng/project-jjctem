@@ -18,6 +18,9 @@ const socket = io.connect("https://formula0.julesyan.com", {
     reconnectionDelay: 1000,
     reconnection:true,
     reconnectionAttempts: 10,
+    agent: false,
+    upgrade: false,
+    rejectUnauthorized: false
 });
 // const socket = io("http://localhost:8081");
 let counter = 0;
