@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 app.use(express.static("project"));
-var server = require("http").Server(app);
+var server = require("https").Server(app);
 
 const io = require("socket.io")(server);
 
