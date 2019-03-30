@@ -39,24 +39,23 @@ export default class Race extends Phaser.Scene {
     //     groundTiles.push(groundSprite);
     //   }
     // }
-    let background_image = this.add.sprite(
-      GAME_WIDTH / 2,
-      GAME_HEIGHT / 2,
-      "universe"
-    );
-    background_image.height = this.GAME_HEIGHT;
-    background_image.width = this.GAME_WIDTH;
+
+    // let background_image = this.add.sprite(
+    //   GAME_WIDTH / 2,
+    //   GAME_HEIGHT / 2,
+    //   "universe"
+    // );
+    // background_image.height = this.GAME_HEIGHT;
+    // background_image.width = this.GAME_WIDTH;
+
     let map = this.make.tilemap({ key: "track" });
     let tileset = map.addTilesetImage("bumper", "tileset");
+    let tileset2 = map.addTilesetImage("background", "universe");
+    let background2 = map.createStaticLayer("Tile Layer 3", tileset2, 0, 0);
     let background = map.createStaticLayer("Tile Layer 2", tileset, 0, 0);
     let bumper = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
     bumper.setCollisionByProperty({ collides: true });
-    // testing text
-    this.text = this.add.text(4800, 100, "Doggo race", {
-      backgroundColor: "black",
-      color: "blue",
-      fontSize: 48
-    });
+
     //this.speed = 0;
     // create local player(car)
 
@@ -144,11 +143,11 @@ export default class Race extends Phaser.Scene {
     this.finishLine = this.physics.add.sprite(4975, 320, "finishline");
     this.finishLine.scaleY = 0.1;
     this.finishLine.setPosition(4975, 320);
-    this.cameras.main.setBounds(0, 0, GAME_WIDTH + 100, GAME_HEIGHT);
+    this.cameras.main.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
     this.cameras.main.startFollow(this.player.sprite);
     this.cameras.main.setZoom(1);
 
-    this.startLine = this.physics.add.sprite(150, 550, "finishline");
+    this.startLine = this.physics.add.sprite(150, 600, "finishline");
     this.startLine.scaleY = 0.1;
     this.startLine.setImmovable();
     this.physics.add.collider(this.player.sprite, this.startLine);
@@ -159,11 +158,11 @@ export default class Race extends Phaser.Scene {
 
     this.second = 0;
     this.start_text = this.add
-      .text(205, 250, "Start!", {
-        backgroundColor: "black",
-        color: "red",
-        fontSize: 100
+      .text(100, 200, "Press me to Start!", {
+        color: "white",
+        fontSize: 50
       })
+      .setStroke("Blue", 10)
       .setInteractive()
       .on("pointerdown", () =>
         this.setStart(this.start_text, this.player, this)
@@ -220,6 +219,13 @@ export default class Race extends Phaser.Scene {
             .toString()
             .substr(1, 3)
       );
+
+      this.time_track =
+        this.second +
+        this.timedEvent
+          .getProgress()
+          .toString()
+          .substr(1, 3);
     } else this.timer.setText("Time: 0");
 
     this.player.drive(this);
@@ -271,6 +277,12 @@ export default class Race extends Phaser.Scene {
 
         if (player.finish == true) {
           if (this.player.finish != true) {
+            this.text = this.add.text(4500, 100, "", {
+              backgroundColor: "black",
+              color: "blue",
+              fontSize: 80
+            });
+
             this.text.setText("YOU LOST");
             won = false;
           }
@@ -287,6 +299,11 @@ export default class Race extends Phaser.Scene {
         });
 
         if (won == true) {
+          this.text = this.add.text(4500, 100, "", {
+            backgroundColor: "black",
+            color: "blue",
+            fontSize: 80
+          });
           this.text.setText("YOU WIN");
         }
 

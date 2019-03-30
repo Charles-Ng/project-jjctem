@@ -31,7 +31,7 @@ export default function(x, y, game, socket) {
       this.emitPlayerData();
 
       // drive forward if up is pressed
-      if (game.cursors.up.isDown && this.speed <= 400) {
+      if (game.cursors.up.isDown && this.speed <= 500) {
         this.speed += 20;
       } else {
         if (this.speed >= 20) {
