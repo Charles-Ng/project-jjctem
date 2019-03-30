@@ -20,13 +20,6 @@ export class Game extends React.Component {
     };
 
     new Phaser.Game(config);
-
-    checkSocketIoConnect().then(function() {
-        console.log("success");
-    }, function(reason) {
-        console.log("failure");
-        console.log(reason);
-    });
   }
 
   shouldComponentUpdate() {

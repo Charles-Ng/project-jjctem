@@ -5,7 +5,7 @@ import { createText } from "./isdown.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import openSocket from "socket.io-client";
 import io from "socket.io-client";
-import { socket } from "./../api";
+import { socket, checkSocketIoConnect } from "./../api";
 //const s_ip = 'https://forumla0.herokuapp.com/';
 // const socket = openSocket("http://localhost:8000");
 //const  socket = openSocket('https://forumla0.herokuapp.com/');
@@ -27,6 +27,16 @@ export default class Race extends Phaser.Scene {
   }
 
   create() {
+
+
+      checkSocketIoConnect().then(function() {
+          console.log("success");
+      }, function(reason) {
+          console.log("failure");
+          console.log(reason);
+      });
+
+
     let finished = false;
     //socket = openSocket(s_ip);
     // Here we set the bounds of our game world
