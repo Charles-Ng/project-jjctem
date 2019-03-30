@@ -1,6 +1,6 @@
 import openSocket from 'socket.io-client';
 import Phaser from "phaser";
-let socket = openSocket("https://formula0.julesyan.com", {path:'/socket', secure: true, reconnect: true, rejectUnauthorized: false});
+const socket = openSocket("https://formula0.julesyan.com", {path:'/socket', secure: true, reconnect: true, rejectUnauthorized: false});
 // const  socket = openSocket("https://formula0.julesyan.com", {path:'/socket'});
 function subscribeToTimer(cb) {
   socket.on('timer', timestamp => cb(null, timestamp));
@@ -73,4 +73,4 @@ function checkSocketIoConnect() {
     });
 }
 
-export { socket, subscribeToTimer,  buttonClicked, newPlayer, checkSocketIoConnect};
+export { subscribeToTimer,  buttonClicked, newPlayer, checkSocketIoConnect};
