@@ -12,7 +12,13 @@ import { checkSocketIoConnect } from "./../api";
 // const socket = io("http://localhost:3000");
 //const socket = io('https://forumla0.herokuapp.com/');
 // const socket = io("https://formula0.julesyan.com", {path:'/socket', secure: true, reconnect: true, rejectUnauthorized: false});
-const socket = io.connect("https://formula0.julesyan.com", { path:'/socket',rejectUnauthorized: false });
+const socket = io.connect("https://formula0.julesyan.com", {
+    path:'/socket',
+    rejectUnauthorized: false,
+    reconnectionDelay: 1000,
+    reconnection:true,
+    reconnectionAttempts: 10,
+});
 // const socket = io("http://localhost:8081");
 let counter = 0;
 let otherPlayers = {};
