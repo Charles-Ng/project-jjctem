@@ -98,7 +98,7 @@ io.on("connection", client => {
 
 const port = 8081;
 //const port = 'https://forumla0.herokuapp.com/game';
-server.listen(port, function(err) {
+io.listen(port, function(err) {
   if (err) throw err;
   console.log("listening on port 8081");
 });
