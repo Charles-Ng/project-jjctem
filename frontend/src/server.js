@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
+const http = require("https").createServer(app);
+const io = require("socket.io").listen(http);
 app.use(express.static("project"));
-var server = require("https").Server(app);
+// var server = require("https").Server(app);
 
-const io = require("socket.io")(server);
+// const io = require("socket.io")(server);
 
 var clickCount = 0;
 
@@ -98,7 +100,7 @@ io.on("connection", client => {
 
 const port = 8081;
 //const port = 'https://forumla0.herokuapp.com/game';
-io.listen(port, function(err) {
+http.listen(port, function(err) {
   if (err) throw err;
   console.log("listening on port 8081");
 });
