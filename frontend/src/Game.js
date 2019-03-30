@@ -1,6 +1,6 @@
 import React from "react";
 import Phaser from "phaser";
-import { subscribeToTimer, buttonClicked, newPlayer } from "./api";
+import { subscribeToTimer, buttonClicked, newPlayer, checkSocketIoConnect } from "./api";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import Race from "./scenes/race";
 export class Game extends React.Component {
@@ -20,6 +20,13 @@ export class Game extends React.Component {
     };
 
     new Phaser.Game(config);
+
+    checkSocketIoConnect().then(function() {
+        console.log("success");
+    }, function(reason) {
+        console.log("failure");
+        console.log(reason);
+    });
   }
 
   shouldComponentUpdate() {
