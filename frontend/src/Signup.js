@@ -13,6 +13,7 @@ export class Signup extends Component {
   state = {
     username: "",
     password: "",
+    content: "",
     redirectState: false
   };
 
@@ -25,15 +26,37 @@ export class Signup extends Component {
   submitForm = e => {
     e.preventDefault();
     console.log(this.state);
-    if (this.state.password.length >= 8 && this.state.password.length > 0) {
-      this.setState({ username: "", password: "" });
-      this.props.history.push({
-        pathname: "/Root",
-        state: { checkLogin: true }
-      });
+    let _this = this;
+    if (_this.state.password.length >= 8 && _this.state.password.length > 0) {
+        // fetch('http://formula0.julesyan.com/api/user/signup', {
+        fetch('https://formula0.julesyan.com/api/user/signup', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: _this.state.username,
+                password: _this.state.password,
+            })
+        })
+        .then(response => response.json())
+        .then(function(data){
+            console.log(data);
+            _this.setState({
+                username: "",
+                password: "" ,
+                content: data.user.username
+            });
+            this.props.history.push({
+                pathname: "/Root",
+                state: { checkLogin: true }
+            });
+        });
     } else {
-      this.setState({ password: "" });
-      alert("Password has to be at least 8 characters!");
+        _this.setState({ password: "" });
+        // **** Need to NOT use alerts ****************************************************************************
+        alert("Password has to be at least 8 characters!");
     }
   };
 
@@ -80,6 +103,10 @@ export class Signup extends Component {
 
             <div className="createAccount">
               <button type="submit">Create Account</button>
+            </div>
+
+            <div>
+              {this.state.content}
             </div>
           </form>
         </div>
