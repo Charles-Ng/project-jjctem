@@ -38,7 +38,8 @@ export class Signup extends Component {
     //   alert("Password has to be at least 8 characters!");
     // }
     e.preventDefault();
-    console.log(this.state);
+    console.log(this);
+    const { match, location, history } = this.props
     let _this = this;
     if (_this.state.password.length >= 8 && _this.state.password.length > 0) {
         fetch('https://formula0.julesyan.com/api/user/signup', {
@@ -119,4 +120,4 @@ export class Signup extends Component {
   }
 }
 
-export default withRouter(Signup)
+export default withRouter(Signup);

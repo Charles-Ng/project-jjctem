@@ -5,6 +5,7 @@ import logo from './logo.PNG';
 
 export class Root extends React.Component {
     render() {
+        console.log(this);
         if (this.props.location == undefined || this.props.location.state == undefined) {
           return (
             // if user didnt signin or singup
