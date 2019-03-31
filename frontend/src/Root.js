@@ -5,7 +5,7 @@ import { Navbar } from "./navbar";
 
 export class Root extends React.Component {
   render() {
-    if (this.props.location.state == undefined) {
+    if (this.props.location == undefined || this.props.location.state == undefined) {
       return (
         // if user didnt signin or singup
         <nav className="navbar navbar-default">
