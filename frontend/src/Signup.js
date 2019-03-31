@@ -9,6 +9,7 @@ import {
   withRouter
 } from "react-router-dom";
 import { Home } from "./Home";
+const config = require('./config.js');
 
 
 export class Signup extends Component {
@@ -25,24 +26,12 @@ export class Signup extends Component {
   };
 
   submitForm = e => {
-    // e.preventDefault();
-    // console.log(this.state);
-    // if (this.state.password.length >= 8 && this.state.password.length > 0) {
-    //   this.setState({ username: "", password: "" });
-    //   this.props.history.push({
-    //     pathname: "/Root",
-    //     state: { checkLogin: true }
-    //   });
-    // } else {
-    //   this.setState({ password: "" });
-    //   alert("Password has to be at least 8 characters!");
-    // }
     e.preventDefault();
     console.log(this);
     const { match, location, history } = this.props
     let _this = this;
     if (_this.state.password.length >= 8 && _this.state.password.length > 0) {
-        fetch('https://formula0.julesyan.com/api/user/signup', {
+        fetch(`{config.BACKEND_URL}/api/user/login`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -61,9 +50,10 @@ export class Signup extends Component {
                 password: "" ,
                 content: data.user.username
             });
-            _this.props.history.push({
+            history.push({
                 pathname: "/",
-                state: { checkLogin: true }
+                state: { checkLogin: true },
+                user: data.user.username
             });
         });
     } else {
@@ -74,15 +64,6 @@ export class Signup extends Component {
   };
 
   render() {
-    // const redirectState = this.state.redirectState;
-    // if (redirectState === true) {
-    //   return (
-    //     <BrowserRouter>
-    //       <Route path="/" Component={Home} />
-    //     </BrowserRouter>
-    //   );
-    // }
-
     return (
         <div className="user-form">
             <h1>Sign Up</h1>

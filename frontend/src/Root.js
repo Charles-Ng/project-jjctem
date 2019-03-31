@@ -5,6 +5,7 @@ import logo from './logo.PNG';
 
 export class Root extends React.Component {
     render() {
+        console.log(this);
         return (
             <nav className="navbar navbar-default">
                 <NavLink exact to={"/"}>

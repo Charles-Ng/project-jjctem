@@ -60,11 +60,8 @@ This application runs on 4 ports, initial setup is frontend on 3000, backend on 
 
 ### Configuration
 Before we run anything we must configure all the ports and servers.
-1. In `frontend/src/server.js`make sure the local version of the `server` variable is __not__ commented out and that the server version __is__.
-    - If you want to change the socket port, this is the file to do that in
-2. In `frontend/src/scenes/race.js` make sure the local version of the `socket` variable is __not__ commented out and that the server version __is__.
-    - If you changed the socket port in step 1, then make sure to change the port in this file too to the same number
-3. If you want to change the port of the backend and/or MySQL database, do so in `backend/app.js`
+In `/frontend/src/config.js`, comment out all server config settings and enable all local config settings. If you want to change the ports and login, do that here.
+
 
 ### Running the app:
 1. In the first terminal, navigate to `frontend`.
@@ -78,14 +75,14 @@ Before we run anything we must configure all the ports and servers.
 
 ## Server
 
-To run the application on different ports, you will have to manually change those (later on will be developed to be in a config file)
+To run the application on different ports and URLs, you will have to manually change those in `frontend/src/config.js`.
 
 We are assuming you have admin access to your entire server. These instructions are for servers running Ubuntu 16.04. There are many other ways to run applications on servers using different technologies, but it was a good learning experience to do it manually instead of relying on a software. Other systems should have similar file locations and configurations, but please research this on your own. Some of these instructions are taken directly from other documents, those are credited below.
 
 **Note: These instructions run the application in development mode, to run them in production mode, compile/build the applications.**
 
 ### Current Configuration
-For changes to these ports, refer to the local installation configuration instructions to find the files.
+For changes to these ports, you will have to manually change those in `frontend/src/config.js`.
 Current ports on formula0.julesyan.com:
 - app/api (aka Main NodeJS app): 8080
     - formula0.julesyan.com/api

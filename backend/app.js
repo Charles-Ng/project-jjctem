@@ -1,7 +1,8 @@
 
 /**
-* Module dependencies.
+* Module dependencies. Sourcing from Frontend b/c of React's restrictions
 */
+const config = require('../frontend/src/config.js');
 const express = require('express')
     , routes = require(__dirname + '/routes/index.js')
     , http = require('http')
@@ -12,10 +13,10 @@ const express = require('express')
     , bodyParser = require("body-parser")
     , connection = mysql.createConnection({
         host     : 'localhost',
-        port     : '3306',
-        user     : 'root',
-        password : 'root',
-        database : 'jjc'
+        port     : config.MYSQL_PORT,
+        user     : config.MYSQL_USER,
+        password : config.MYSQL_PASS,
+        database : config.DATABASE
     });
 connection.connect();
 global.db = connection;
@@ -23,7 +24,6 @@ global.db = connection;
 
 
 // all environments
-// app.set('port', 8080);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // app.use(express.static(path.join(__dirname, '../frontend/public/')));
@@ -75,8 +75,7 @@ app.use(function (req, res, next){
 
 
 
-const PORT = 8080;
-http.createServer(app).listen(PORT, function (err) {
+http.createServer(app).listen(config.BACKEND_PORT, function (err) {
     if (err) console.log(err);
-    else console.log("HTTP server on http://localhost:%s", PORT);
+    else console.log("HTTP server on http://localhost:%s", config.BACKEND_PORT);
 });
