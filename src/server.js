@@ -1,9 +1,14 @@
 const express = require("express");
-const app = express();
-app.use(express.static("project"));
-var server = require("http").Server(app);
 
-const io = require("socket.io")(server);
+const socketIO = require("socket.io");
+const path = require("path");
+const port = process.env.PORT || 8000;
+const INDEX = path.join(__dirname, "index.html");
+const server = rexpress()
+  .use((req, res) => res.sendFile(INDEX))
+  .listen(PORT, () => console.log("Listening on ${ PORT }"));
+
+const io = socketIO(server);
 
 var clickCount = 0;
 
@@ -96,12 +101,11 @@ io.on("connection", client => {
   // });
 });
 
-const port = process.env.PORT || 8000;
 //const port = 'https://forumla0.herokuapp.com/game';
-io.listen(port, function(err) {
-  if (err) throw err;
-  console.log("listening on port 8000");
-});
+// io.listen(port, function(err) {
+//   if (err) throw err;
+//   console.log("listening on port 8000");
+// });
 // socket.on('disconnect', state => {
 //   delete players[socket.id]
 //   io.emit('update-players', players)
