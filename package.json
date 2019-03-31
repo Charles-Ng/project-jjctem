@@ -17,14 +17,11 @@
     "socket.io": "^2.2.0"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"node server.js\"",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "client-install": "npm install --prefix client",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "server": "node src/server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
