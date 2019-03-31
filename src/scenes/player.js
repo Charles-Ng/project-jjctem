@@ -1,14 +1,13 @@
 import Phaser from "phaser";
 //import {isDown} from "./isdown";
 
-export default function(x, y, game, socket) {
+export default function(x, y, game, socket, id) {
   const player = {
     socket,
     sprite: game.physics.add.sprite(x, y, "car").setScale(0.05),
     playerName: null,
     speed: 0,
-    finish: false,
-    start: false,
+
     speedText: null,
     drive(game) {
       //this.
@@ -31,7 +30,7 @@ export default function(x, y, game, socket) {
       this.emitPlayerData();
 
       // drive forward if up is pressed
-      if (game.cursors.up.isDown && this.speed <= 500) {
+      if (game.cursors.up.isDown && this.speed <= 400) {
         this.speed += 20;
       } else {
         if (this.speed >= 20) {
@@ -77,34 +76,54 @@ export default function(x, y, game, socket) {
         this.speedText
       );
     },
-
     emitPlayerData() {
+      //socket.send("move-player", "haha");
+      var move = {
+        type: "move",
+        details: {
+          x: this.sprite.body.x,
+          y: this.sprite.body.y,
+          angle: this.sprite.body.rotation,
+          playerName: {
+            name: this.playerName.text,
+            x: this.playerName.x,
+            y: this.playerName.y
+          },
+          speed: {
+            value: this.speed,
+            x: this.speedText.x,
+            y: this.speedText.y
+          }
+        }
+      };
+      socket.send(JSON.stringify(move));
       // Emit the 'move-player' event, updating the player's data on the server
-      socket.emit("move-player", {
-        x: this.sprite.body.x,
-        y: this.sprite.body.y,
-        angle: this.sprite.body.rotation,
-        playerName: {
-          name: this.playerName.text,
-          x: this.playerName.x,
-          y: this.playerName.y
-        },
-        speed: {
-          value: this.speed,
-          x: this.speedText.x,
-          y: this.speedText.y
-        },
-        finish: this.finish,
-        start: this.start
-      });
+      // socket.emit("move-player", {
+      //   x: this.sprite.body.x,
+      //   y: this.sprite.body.y,
+      //   angle: this.sprite.body.rotation,
+      //   playerName: {
+      //     name: this.playerName.text,
+      //     x: this.playerName.x,
+      //     y: this.playerName.y
+      //   },
+      //   speed: {
+      //     value: this.speed,
+      //     x: this.speedText.x,
+      //     y: this.speedText.y
+      //   }
+      // });
     },
     updatePlayerName(
-      name = this.socket.id,
+      //ADD ACCOUNT USER NAME
+      name = id,
       x = this.sprite.body.x - 57,
       y = this.sprite.body.y - 59
     ) {
       // Updates the player's name text and position
-      this.playerName.text = String(name);
+      //console.log('inside player' + String(id));
+
+      this.playerName.text = String(id);
       this.playerName.x = x;
       this.playerName.y = y;
       // Bring the player's name to top
@@ -121,14 +140,6 @@ export default function(x, y, game, socket) {
       text.y = y;
       text.text = `${capitalizedStatus}: ${parseInt(this.newText)}`;
       //game.world.bringToTop(text)
-    },
-
-    playerFinished() {
-      this.finish = true;
-    },
-
-    playerStarted() {
-      this.start = true;
     }
   };
   return player;
