@@ -25,7 +25,6 @@ export class Signup extends Component {
 
   submitForm = e => {
     e.preventDefault();
-    console.log(this.state);
     let _this = this;
     if (_this.state.password.length >= 8 && _this.state.password.length > 0) {
         // fetch('http://formula0.julesyan.com/api/user/signup', {
@@ -46,7 +45,7 @@ export class Signup extends Component {
             _this.setState({
                 username: "",
                 password: "" ,
-                content: data.user.username
+                content: _this.state.username
             });
             this.props.history.push({
                 pathname: "/Root",
