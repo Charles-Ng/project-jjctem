@@ -11,11 +11,11 @@ const express = require('express')
     , mysql = require('mysql')
     , bodyParser = require("body-parser")
     , connection = mysql.createConnection({
-        host     : 'localhost',
-        port     : '8889',
-        user     : 'root',
-        password : 'root',
-        database : 'jjc'
+        host     : '127.0.0.1',
+        port     : '3306',
+        user     : 'foo',
+        password : 'bar',
+        database : 'jjcc'
     });
 connection.connect();
 global.db = connection;
