@@ -60,7 +60,7 @@ export class Signup extends Component {
                 content: data.user.username
             });
             _this.props.history.push({
-                pathname: "/Root",
+                pathname: "/",
                 state: { checkLogin: true }
             });
         });
