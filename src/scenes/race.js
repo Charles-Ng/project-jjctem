@@ -1,22 +1,12 @@
 import Phaser from "phaser";
 import player from "./player";
 import { createText } from "./isdown.js";
-//import createPlayer from "./createPlayer.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
-import openSocket from "socket.io-client";
-import io from "socket.io-client";
-import { checkSocketIoConnect } from "./../api";
+
 
 //var HOST = location.origin.replace(/^http/, 'ws');
 var socket = new WebSocket("ws://localhost:8000");
-//const s_ip = 'https://forumla0.herokuapp.com/';
-// const socket = openSocket("http://localhost:8000");
-//const  socket = openSocket('https://forumla0.herokuapp.com/');
-// const socket = io("http://localhost:3000");
-//const socket = io('https://forumla0.herokuapp.com/');
-//const socket = io.connect("http://formula0.julesyan.com", {path:'/socket'});
-// const socket = io.connect("http://formula0.julesyan.com:8081", {path: "/", rejectUnauthorized: false, secure: true});
-// const socket = io("http://localhost:8081");
+
 let counter = 0;
 let countdown = 3;
 let startcount = 0;
@@ -38,12 +28,7 @@ export default class Race extends Phaser.Scene {
   }
 
   create() {
-    // checkSocketIoConnect().then(function() {
-    //     console.log("success");
-    // }, function(reason) {
-    //     console.log("failure");
-    //     console.log(reason);
-    // });
+
     game = this;
     //socket = openSocket(s_ip);
     // Here we set the bounds of our game world
@@ -69,17 +54,9 @@ export default class Race extends Phaser.Scene {
 
     //this.speed = 0;
     // create local player(car)
-    // var slat = {type: "slat", text:"wow"};
-    // socket.send(JSON.stringify(slat));
-
-    //console.log(id);
     this.player = player(50, 550, this, socket, id);
     this.player.playerName = createText(this, this.player.sprite.body);
     this.player.speedText = createText(this, this.player.sprite.body);
-    //console.log('why empty' + this.player.playerName.text);
-    //playa = this.player;
-    // this.car = this.physics.add.sprite(50, 800, "car").setScale(0.5);
-    //createPlayer(socket, this.player);
     var newplayer = {
       type: "new-player",
       details: {
@@ -102,131 +79,11 @@ export default class Race extends Phaser.Scene {
     };
     socket.send(JSON.stringify(newplayer));
 
-    socket.onmessage = function(event) {
-      var playersData = JSON.parse(event.data);
-      //console.log(playersData);
-      let playersFound = {};
-      // Iterate over all players
-      for (let index in playersData) {
-        const data = playersData[index];
-        //  console.log(index);
-        //  console.log(data);
-
-        // In case a player hasn't been created yet
-        // We make sure that we won't create a second instance of it
-        if (otherPlayers[index] === undefined && data.playerName.name !== id) {
-          const newPlayer = player(
-            data.x,
-            data.y,
-            game,
-            socket,
-            data.playerName.name
-          );
-          newPlayer.playerName = createText(game, newPlayer);
-          newPlayer.speedText = createText(game, newPlayer);
-          newPlayer.updatePlayerName(
-            data.playerName.name,
-            data.playerName.x,
-            data.playerName.y
-          );
-          otherPlayers[index] = newPlayer;
-        }
-
-        playersFound[index] = true;
-
-        // Update players data
-        if (data.playerName.name !== id) {
-          // Update players target but not their real position
-          otherPlayers[index].target_x = data.x;
-          otherPlayers[index].target_y = data.y;
-          otherPlayers[index].target_rotation = data.angle;
-
-          otherPlayers[index].playerName.target_x = data.playerName.x;
-          otherPlayers[index].playerName.target_y = data.playerName.y;
-
-          otherPlayers[index].speedText.target_x = data.speed.x;
-          otherPlayers[index].speedText.target_y = data.speed.y;
-
-          otherPlayers[index].speed = data.speed.value;
-          otherPlayers[index].finish = data.finish;
-          otherPlayers[index].start = data.start;
-        }
-      }
-
-      // Check if there's no missing players, if there is, delete them
-      for (let idz in otherPlayers) {
-        if (!playersFound[idz]) {
-          otherPlayers[idz].sprite.destroy();
-          otherPlayers[idz].playerName.destroy();
-          otherPlayers[idz].speedText.destroy();
-          delete otherPlayers[idz];
-        }
-      }
-      //console.log(data);
-    };
-    // socket.onclose = function() {
-    //   //console.log('wow');
-    //   //  socket.send(JSON.stringify(
-    //   //    {slat:id}
-    //   //  ));
-    //   socket.close({code:1000, reason:id});
-    // };
-    // //this.angle = this.car.rotation;
-    // this.car.speed = 0;
+  
     this.player.sprite.setCollideWorldBounds(true);
     this.physics.add.collider(this.player.sprite, bumper);
 
-    this.player.playerName = createText(this, this.player.sprite.body);
-    // socket.on("update-players", playersData => {
-    //   //console.log(playersData);
-    // let playersFound = {};
-    // // Iterate over all players
-    // for (let index in playersData) {
-    //   const data = playersData[index];
-    //   // In case a player hasn't been created yet
-    //   // We make sure that we won't create a second instance of it
-    //   if (otherPlayers[index] === undefined && index !== socket.id) {
-    //     const newPlayer = player(data.x, data.y, this);
-    //     newPlayer.playerName = createText(this, newPlayer);
-    //     newPlayer.speedText = createText(this, newPlayer);
-    //     newPlayer.updatePlayerName(
-    //       data.playerName.name,
-    //       data.playerName.x,
-    //       data.playerName.y
-    //     );
-    //     otherPlayers[index] = newPlayer;
-    //   }
-
-    //   playersFound[index] = true;
-
-    //   // Update players data
-    //   if (index !== socket.id) {
-    //     // Update players target but not their real position
-    //     otherPlayers[index].target_x = data.x;
-    //     otherPlayers[index].target_y = data.y;
-    //     otherPlayers[index].target_rotation = data.angle;
-
-    //     otherPlayers[index].playerName.target_x = data.playerName.x;
-    //     otherPlayers[index].playerName.target_y = data.playerName.y;
-
-    //     otherPlayers[index].speedText.target_x = data.speed.x;
-    //     otherPlayers[index].speedText.target_y = data.speed.y;
-
-    //     otherPlayers[index].speed = data.speed.value;
-    //     otherPlayers[index].finish = data.finish;
-    //   }
-    // }
-
-    // // Check if there's no missing players, if there is, delete them
-    // for (let id in otherPlayers) {
-    //   if (!playersFound[id]) {
-    //     otherPlayers[id].sprite.destroy();
-    //     otherPlayers[id].playerName.destroy();
-    //     otherPlayers[id].speedText.destroy();
-    //     delete otherPlayers[id];
-    //   }
-    // }
-    // });
+    
 
     this.finishLine = this.physics.add.sprite(4975, 320, "finishline");
     this.finishLine.scaleY = 0.1;
@@ -319,17 +176,16 @@ export default class Race extends Phaser.Scene {
     this.player.drive(this);
     socket.onmessage = function(event) {
       var playersData = JSON.parse(event.data);
-      //console.log(playersData);
       let playersFound = {};
       // Iterate over all players
+      
       for (let index in playersData) {
         const data = playersData[index];
-        //  console.log(index);
-        //  console.log(data);
 
         // In case a player hasn't been created yet
         // We make sure that we won't create a second instance of it
-        if (otherPlayers[index] === undefined && data.playerName.name !== id) {
+        if (otherPlayers[index] === undefined && data.playerName.name !== '' && data.playerName.name !== id) {
+
           const newPlayer = player(
             data.x,
             data.y,
@@ -350,7 +206,8 @@ export default class Race extends Phaser.Scene {
         playersFound[index] = true;
 
         // Update players data
-        if (data.playerName.name !== id) {
+        if (data.playerName.name !== id && data.playerName.name !== '') {
+
           // Update players target but not their real position
           otherPlayers[index].target_x = data.x;
           otherPlayers[index].target_y = data.y;
@@ -367,7 +224,6 @@ export default class Race extends Phaser.Scene {
           otherPlayers[index].start = data.start;
         }
       }
-
       // Check if there's no missing players, if there is, delete them
       for (let idz in otherPlayers) {
         if (!playersFound[idz]) {
@@ -377,10 +233,8 @@ export default class Race extends Phaser.Scene {
           delete otherPlayers[idz];
         }
       }
-      //console.log(data);
     };
     for (let id in otherPlayers) {
-      // console.log(otherPlayers);
       let player = otherPlayers[id];
       if (player.target_x !== undefined) {
         // Interpolate the player's position
@@ -446,9 +300,6 @@ export default class Race extends Phaser.Scene {
       if (counter == 0) {
         var finish = { type: "finish", details: id };
         socket.send(JSON.stringify(finish));
-        // socket.send("finished", {
-        //   finish: true
-        // });
         if (won == true) {
           this.text = this.add.text(4500, 100, "", {
             backgroundColor: "black",
@@ -463,39 +314,6 @@ export default class Race extends Phaser.Scene {
         counter++;
       }
     }
-    // // drive forward if up is pressed
-    // if (this.cursors.up.isDown && this.car.speed <= 400) {
-    //   this.car.speed += 20;
-    // } else {
-    //   if (this.car.speed >= 20) {
-    //     this.car.speed -= 20;
-    //   }
-    // }
 
-    // // Drive backwards if down is pressed down
-    // if (this.cursors.down.isDown && this.car.speed >= -200) {
-    //   this.car.speed -= 10;
-    // } else {
-    //   if (this.car.speed <= -10) {
-    //     this.car.speed += 10;
-    //   }
-    // }
-
-    // // Steers the car
-    // if (this.cursors.left.isDown) {
-    //   this.car.setAngularVelocity(-250 * (this.car.speed / 1000));
-    // } else if (this.cursors.right.isDown) {
-    //   this.car.setAngularVelocity(250 * (this.car.speed / 1000));
-    // } else {
-    //   this.car.setAngularVelocity(0);
-    // }
-
-    // // movement of the car
-    // this.car.setVelocityX(
-    //   this.car.speed * Math.cos((this.car.angle - 360) * 0.01745)
-    // );
-    // this.car.setVelocityY(
-    //   this.car.speed * Math.sin((this.car.angle - 360) * 0.01745)
-    // );
   }
 }

@@ -19,7 +19,7 @@ io.on("connection", client => {
   console.log("Client connected");
   client.on("close", function() {
     delete players[id];
-    //console.log( players);
+    console.log( players);
     if (client.readyState !== undefined && client.readyState === 1) {
       client.send(JSON.stringify(players));
     }
@@ -38,7 +38,9 @@ io.on("connection", client => {
         // console.log(players);
         //playerCount++;
         //client.send(JSON.stringify({type: 'id', id:playerCount}));
-        client.send(JSON.stringify(players));
+        if (client.readyState !== undefined && client.readyState === 1) {
+          client.send(JSON.stringify(players));
+        }
         break;
       case "move":
         const {
@@ -76,21 +78,25 @@ io.on("connection", client => {
             players[i].finish = true;
           }
         }
-        client.send(JSON.stringify(players));
+        if (client.readyState !== undefined && client.readyState === 1) {
+          client.send(JSON.stringify(players));
+        }
         break;
 
       case "start":
-        console.log("start");
+        //console.log("start");
 
         for (let i in players) {
-          console.log(i);
+          //console.log(i);
           if (players[i].playerName.name === current.details) {
             players[i].start = true;
-            console.log(players[i].start);
+            //console.log(players[i].start);
           }
         }
         //players[current.details].finish = true;
-        client.send(JSON.stringify(players));
+        if (client.readyState !== undefined && client.readyState === 1) {
+          client.send(JSON.stringify(players));
+        }
         break;
     }
   });
