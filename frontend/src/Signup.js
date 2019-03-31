@@ -58,6 +58,10 @@ export class Signup extends Component {
                 password: "" ,
                 content: data.user.username
             });
+            _this.props.history.push({
+                pathname: "/Root",
+                state: { checkLogin: true }
+            });
         });
     } else {
         _this.setState({ password: "" });
