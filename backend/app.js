@@ -12,7 +12,7 @@ const express = require('express')
     , bodyParser = require("body-parser")
     , connection = mysql.createConnection({
         host     : 'localhost',
-        port     : '8889',
+        port     : '3306',
         user     : 'root',
         password : 'root',
         database : 'jjc'
