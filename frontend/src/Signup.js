@@ -112,7 +112,6 @@ export class Signup extends Component {
                 <div className="createAccount">
                   <button type="submit">Create Account</button>
                 </div>
-              </form>
             </form>
         </div>
     );
