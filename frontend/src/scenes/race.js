@@ -26,16 +26,6 @@ export default class Race extends Phaser.Scene {
   }
 
   create() {
-
-
-      checkSocketIoConnect().then(function() {
-          console.log("success");
-      }, function(reason) {
-          console.log("failure");
-          console.log(reason);
-      });
-
-
     let finished = false;
     //socket = openSocket(s_ip);
     // Here we set the bounds of our game world
