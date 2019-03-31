@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { Link, NavLink, withRouter, BrowserRouter } from "react-router-dom";
 
 import { Navbar } from "./navbar";
+import logo from './logo.png';
 
 export class Root extends React.Component {
   render() {
+    this.load.image("logo", "assets/logo.png");
     if (this.props.location == undefined || this.props.location.state == undefined) {
       return (
         // if user didnt signin or singup
         <nav className="navbar navbar-default">
             <NavLink exact to={"/"}>
-                <img src='/assets/logo.png' alt="Logo" />
+                <img src={logo} alt="Logo" />
             </NavLink>
             <div className="links">
                 <NavLink exact to={"/"} activeClassName="selected"><span>Home</span></NavLink>
