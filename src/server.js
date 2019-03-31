@@ -1,12 +1,12 @@
 const express = require("express");
 const app = express();
-
-const server = require("http").Server(app);
+const path = require("path");
+const server = require("http").createServer(app);
 
 const io = (module.exports.io = require("socket.io")(server));
-
+app, use(express.static(path.join(__dirname, "../build")));
 app.get("/", function(req, res) {
-  res.sendFile("public/index.html", { root: __dirname });
+  res.sendFile(__dirname + "index.html");
 });
 var clickCount = 0;
 
@@ -99,9 +99,9 @@ io.on("connection", client => {
   // });
 });
 
-const port = process.env.PORT || 3231;
+const port = process.env.PORT || 8080;
 //const port = 'https://forumla0.herokuapp.com/game';
-io.listen(port, function(err) {
+server.listen(port, function(err) {
   if (err) throw err;
   console.log("listening on port 8000");
 });
