@@ -5,10 +5,12 @@ import { createText } from "./isdown.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import openSocket from "socket.io-client";
 import io from "socket.io-client";
-import { checkSocketIoConnect } from "./../api";
+//import { checkSocketIoConnect } from "./../api";
 
 //var HOST = location.origin.replace(/^http/, 'ws');
-var socket = new WebSocket("ws://localhost:8000");
+//var socket = new WebSocket("ws://localhost:8000");
+var socket = new WebSocket('wss://formula0.julesyan.com:8081');
+//var socket = new WebSocket('ws://formula0.julesyan.com/socket');
 //const s_ip = 'https://forumla0.herokuapp.com/';
 // const socket = openSocket("http://localhost:8000");
 //const  socket = openSocket('https://forumla0.herokuapp.com/');
