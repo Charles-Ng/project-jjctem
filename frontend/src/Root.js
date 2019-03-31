@@ -30,7 +30,7 @@ export class Root extends React.Component {
             <div className="links">
                 <NavLink exact to={"/"} activeClassName="selected"><span>Home</span></NavLink>
                 <NavLink to={"/game"} activeClassName="selected"><span>Play</span></NavLink>
-                <NavLink to={"/logout"} activeClassName="selected"><span>Logoutt</span></NavLink>
+                <NavLink to={"/logout"} activeClassName="selected"><span>Logout</span></NavLink>
             </div>
         </nav>
       );
