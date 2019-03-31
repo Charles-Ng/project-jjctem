@@ -41,7 +41,15 @@ io.on("connection", client => {
         client.send(JSON.stringify(players));
         break;
       case "move":
-        const { x, y, angle, playerName, speed, finished } = current.details;
+        const {
+          x,
+          y,
+          angle,
+          playerName,
+          speed,
+          finish,
+          start
+        } = current.details;
         players[id].x = x;
         players[id].y = y;
         players[id].angle = angle;
@@ -55,16 +63,30 @@ io.on("connection", client => {
           x: speed.x,
           y: speed.y
         };
-        players[id].finish = finished;
+        players[id].finish = finish;
+        players[id].start = start;
         client.send(JSON.stringify(players));
         break;
+
       case "finish":
         //console.log(current.details);
 
         for (let i in players) {
-          console.log(i);
           if (players[i].playerName.name === current.details) {
             players[i].finish = true;
+          }
+        }
+        client.send(JSON.stringify(players));
+        break;
+
+      case "start":
+        console.log("start");
+
+        for (let i in players) {
+          console.log(i);
+          if (players[i].playerName.name === current.details) {
+            players[i].start = true;
+            console.log(players[i].start);
           }
         }
         //players[current.details].finish = true;

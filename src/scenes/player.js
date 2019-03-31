@@ -7,8 +7,9 @@ export default function(x, y, game, socket, id) {
     sprite: game.physics.add.sprite(x, y, "car").setScale(0.05),
     playerName: null,
     speed: 0,
-
     speedText: null,
+    finish: false,
+    start: false,
     drive(game) {
       //this.
       //game.angle = this.sprite.body.rotation;
@@ -93,7 +94,9 @@ export default function(x, y, game, socket, id) {
             value: this.speed,
             x: this.speedText.x,
             y: this.speedText.y
-          }
+          },
+          finish: this.finish,
+          start: this.start
         }
       };
       socket.send(JSON.stringify(move));
@@ -140,6 +143,13 @@ export default function(x, y, game, socket, id) {
       text.y = y;
       text.text = `${capitalizedStatus}: ${parseInt(this.newText)}`;
       //game.world.bringToTop(text)
+    },
+    playerFinished() {
+      this.finish = true;
+    },
+
+    playerStarted() {
+      this.start = true;
     }
   };
   return player;
