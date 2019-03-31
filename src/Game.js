@@ -3,6 +3,8 @@ import Phaser from "phaser";
 import { subscribeToTimer, buttonClicked, newPlayer } from "./api";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import Race from "./scenes/race";
+
+const socket = io();
 export class Game extends React.Component {
   componentDidMount() {
     const config = {
@@ -56,6 +58,7 @@ export class Game extends React.Component {
     slat:"slat"
   };
   render() {
-    return <div id="phaser-game" />;
+    return <div id="phaser-game" />
+    <script></script>;
   }
 }

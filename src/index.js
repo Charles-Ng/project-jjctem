@@ -6,8 +6,9 @@ import { Root } from "./Root";
 import { Home } from "./Home";
 import { Signup } from "./Signup";
 import { Signin } from "./Signin";
-import {Game} from "./Game";
+import { Game } from "./Game";
 
+const socket = io();
 class App extends React.Component {
   render() {
     return (
