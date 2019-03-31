@@ -47,7 +47,7 @@ export class Signup extends Component {
                 password: "" ,
                 content: _this.state.username
             });
-            this.props.history.push({
+            _this.props.history.push({
                 pathname: "/Root",
                 state: { checkLogin: true }
             });
