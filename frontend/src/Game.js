@@ -3,6 +3,7 @@ import Phaser from "phaser";
 // import { subscribeToTimer, buttonClicked, newPlayer, checkSocketIoConnect } from "./api";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import Race from "./scenes/race";
+import "./style/game.css";
 export class Game extends React.Component {
   componentDidMount() {
     const config = {

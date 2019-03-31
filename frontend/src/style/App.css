@@ -1,0 +1,199 @@
+/*
+F1Regular and F1RegularItalic
+*/
+@font-face {
+  font-family: 'F1';
+  src:  url("/assets/fonts/Formula1-Regular.woff") format("woff");;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'F1';
+  src:  url("/assets/fonts/Formula1-Italic.woff") format("woff");;
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'F1Bold';
+  src:  url("/assets/fonts/Formula1-Bold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'F1Black';
+  src:  url("/assets/fonts/Formula1-Black.woff") format("woff");;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'F1Wide';
+  src: url("/assets/fonts/Formula1-Wide.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+::selection {
+  background: pink; /* WebKit/Blink Browsers */
+}
+
+::-moz-selection {
+  background: pink; /* Gecko Browsers */
+}
+
+body{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    margin-top: 95px;
+    background: #e2e2e2;
+}
+
+nav{
+    margin-bottom: 0;
+    z-index: 9999;
+    border: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 4px;
+    border-radius: 0;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    background: #ffffffE6;
+    position: fixed;
+    width: calc(100% - 30px);
+    top: 0;
+    left: 0;
+    font-family: 'F1';
+}
+
+nav img{
+    max-height: 70px;
+    margin: 10px;
+}
+
+nav .links{
+    font-size: 20px;
+    text-align: right;
+    display: flex;
+    align-items: center;
+}
+
+nav .links a{
+    text-decoration: none;
+    color: black;
+    letter-spacing: normal;
+    padding: 0 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+nav .links a:not(.selected):hover{
+    background: #D91900;
+    color: white;
+}
+
+nav .links a.selected{
+    background: #cacaca;
+}
+
+.footer{
+    text-align: center;
+    background: white;
+    padding: 70px 30px;
+    font-family: 'F1';
+}
+
+.footer a{
+    text-decoration: none;
+    color: black;
+}
+
+.footer a:hover{
+    color: #D91900;
+}
+
+.footer .links{
+    padding: 40px 0 0 0;
+}
+
+.footer .links a{
+    padding: 0 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.wrapper {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #282c34;
+}
+
+.form-wrapper {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 50px #555;
+  background-color: #ffffff;
+}
+.username,
+.password {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.header {
+  background-color: #282c34;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */

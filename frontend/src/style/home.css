@@ -1,0 +1,14 @@
+.home{
+    overflow: hidden;
+}
+
+.home .banner{
+    font-family: 'F1Bold';
+    font-size: 50px;
+    text-align: center;
+    padding: 100px;
+}
+
+.home img{
+    width: 100%;
+}
