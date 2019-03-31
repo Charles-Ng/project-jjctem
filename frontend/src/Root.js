@@ -19,8 +19,7 @@ export class Root extends React.Component {
             </div>
         </nav>
       );
-    }
-    if (this.props.location.state.checkLogin == true) {
+    } else if (this.props.location.state.checkLogin == true) {
       // if user signed up
       return (
         <nav className="navbar navbar-default">
