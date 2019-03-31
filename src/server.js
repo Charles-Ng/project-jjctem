@@ -1,10 +1,11 @@
 const express = require("express");
 const app = express();
-app.use(express.static("project"));
-var server = require("http").Server(app);
 
-const io = require("socket.io")(server);
+const server = require("http").Server(app);
 
+const io = (module.exports.io = require("socket.io")(server));
+
+app.use(express.static(__dirname + "../public/index.html"));
 var clickCount = 0;
 
 const players = {};
@@ -96,7 +97,7 @@ io.on("connection", client => {
   // });
 });
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3231;
 //const port = 'https://forumla0.herokuapp.com/game';
 io.listen(port, function(err) {
   if (err) throw err;
