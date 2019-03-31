@@ -17,8 +17,11 @@
     "socket.io": "^2.2.0"
   },
   "scripts": {
+    "start": "concurrently \"react-scripts start\" \"node server.js\"",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
     "client-install": "npm install --prefix client",
-    "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
@@ -26,7 +29,6 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://localhost:8000",
   "browserslist": [
     ">0.2%",
     "not dead",
