@@ -2,6 +2,7 @@
   "name": "phaserGame",
   "version": "0.1.0",
   "private": true,
+  
   "dependencies": {
     "bufferutil": "4.0.1",
     "concurrently": "^4.1.0",
