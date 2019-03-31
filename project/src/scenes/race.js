@@ -12,7 +12,7 @@ import io from "socket.io-client";
 //const socket = io('https://forumla0.herokuapp.com/');
 // const socket = io("http://formula0.julesyan/com:8000");
 //const socket = io("http://localhost:8000");
-const socket = io();
+const socket = io("/");
 let counter = 0;
 let otherPlayers = {};
 let countdown = 3;
