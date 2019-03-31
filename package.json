@@ -1,8 +1,7 @@
 {
-  "name": "frontend",
+  "name": "phaserGame",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./frontend",
   "dependencies": {
     "bufferutil": "4.0.1",
     "concurrently": "^4.1.0",
@@ -29,6 +28,9 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "engines": {
+    "node": "10.3.0"
   },
   "browserslist": [
     ">0.2%",
