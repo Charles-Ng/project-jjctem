@@ -4,23 +4,20 @@ const express = require("express");
 const WebSocket = require('ws');
 const app = express();
 
-const server = new https.createServer({
-  cert: fs.readFileSync('/etc/letsencrypt/live/formula0.julesyan.com/cert.pem'),
-  key: fs.readFileSync('/etc/letsencrypt/live/formula0.julesyan.com/privkey.pem')
-});
+// const server = new https.createServer({
+//   cert: fs.readFileSync('/etc/letsencrypt/live/formula0.julesyan.com/cert.pem'),
+//   key: fs.readFileSync('/etc/letsencrypt/live/formula0.julesyan.com/privkey.pem')
+// }); // for server only
+var server = require("http").Server(app); // for local only
 const io =  new WebSocket.Server({ server });
 
 
 app.use(express.static("project"));
-//var server = require("http").Server(app);
 const port = 8081;
 server.listen(port, function(err) {
   if (err) throw err;
   console.log(`listening on port ${port}`);
 });
-//const SocketServer = require("ws").Server;
-//const io = new SocketServer({ server });
-//const io = require("socket.io")(server);
 
 var playerCount = 0;
 

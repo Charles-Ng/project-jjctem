@@ -20,7 +20,6 @@
     "ws": "6.2.1"
   },
   "scripts": {
-    "start_something": "concurrently 'npm run start' 'npm run server'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -53,10 +53,20 @@ TL;DR
 
 # Installation
 ## Database
-The database file is in `backend/db/`. Run this file on your local database. If you do not already, you will have to create an initial database call jjc.
+The database file is in `backend/db/`. Run this file on your local database. If you do not already, you will have to create an empty database called jjc.
 
 ## Locally
-This application runs on 4 ports, initial setup is frontend on 3000, backend on 8000, socket on 8081, and the MySQL database on 8889 (this will be customizable later). You will need 3 terminal windows to fully run this application.
+This application runs on 4 ports, initial setup is frontend on 3000, backend on 8000, socket on 8081, and the MySQL database on 8889 (you can change any of these ports yourself in the code). You will need 3 terminal windows to fully run this application.
+
+### Configuration
+Before we run anything we must configure all the ports and servers.
+1. In `frontend/src/server.js`make sure the local version of the `server` variable is __not__ commented out and that the server version __is__.
+    - If you want to change the socket port, this is the file to do that in
+2. In `frontend/src/scenes/race.js` make sure the local version of the `socket` variable is __not__ commented out and that the server version __is__.
+    - If you changed the socket port in step 1, then make sure to change the port in this file too to the same number
+3. If you want to change the port of the backend and/or MySQL database, do so in `backend/app.js`
+
+### Running the app:
 1. In the first terminal, navigate to `frontend`.
 2. Run `npm install`.
 3. Run `npm start`.
@@ -67,6 +77,15 @@ This application runs on 4 ports, initial setup is frontend on 3000, backend on 
 8. Run `node app.js`.
 
 ## Server
+
+To run the application on different ports, you will have to manually change those (later on will be developed to be in a config file)
+
+We are assuming you have admin access to your entire server. These instructions are for servers running Ubuntu 16.04. There are many other ways to run applications on servers using different technologies, but it was a good learning experience to do it manually instead of relying on a software. Other systems should have similar file locations and configurations, but please research this on your own. Some of these instructions are taken directly from other documents, those are credited below.
+
+**Note: These instructions run the application in development mode, to run them in production mode, compile/build the applications.**
+
+### Current Configuration
+For changes to these ports, refer to the local installation configuration instructions to find the files.
 Current ports on formula0.julesyan.com:
 - app/api (aka Main NodeJS app): 8080
     - formula0.julesyan.com/api
@@ -75,13 +94,6 @@ Current ports on formula0.julesyan.com:
 - npm (aka React app): 3000
     - formula0.julesyan.com
 - mysql (database): 3306
-
-To run the application on different ports, you will have to manually change those (later on will be developed to be in a config file)
-
-We are assuming you have admin access to your entire server. These instructions are for servers running Ubuntu 16.04. There are many other ways to run applications on servers using different technologies, but it was a good learning experience to do it manually instead of relying on a software. Other systems should have similar file locations and configurations, but please research this on your own. Some of these instructions are taken directly from other documents, those are credited below.
-
-**Note: These instructions run the application in development mode, to run them in production mode, compile/build the applications.**
-
 
 
 ### Prerequisites
@@ -180,7 +192,7 @@ The entire application should now be running on your domain! Please remember tha
 # Credits
 Created by JJC (Joshua Chong, Julia Yan, Charles Ng) for [CSCC09](https://thierrysans.me/CSCC09/)
 
-Any similarities to the [Formula One Group's](http://www.libertymedia.com/companies/formula-one-group.html) [Formula 1](https://www.formula1.com/), [Formula 2](http://www.fiaformula2.com/), or [Formula 3](http://www.fiaformula3.com/) are completely for humor.
+Any similarities to the [Formula One Group's](http://www.libertymedia.com/companies/formula-one-group.html) [Formula 1](https://www.formula1.com/), [Formula 2](http://www.fiaformula2.com/), or [Formula 3](http://www.fiaformula3.com/) are completely for humor and educational purposes.
 
 ### Instructional Credits
 - [How To Set Up a Node.js Application for Production on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04)

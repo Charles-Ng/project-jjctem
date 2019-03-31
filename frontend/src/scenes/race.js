@@ -4,9 +4,9 @@ import { createText } from "./isdown.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 
 
-//var HOST = location.origin.replace(/^http/, 'ws');
-// var socket = new WebSocket("ws://localhost:8000");
-var socket = new WebSocket('wss://formula0.julesyan.com:8081');
+// var HOST = location.origin.replace(/^http/, 'ws');
+// var socket = new WebSocket("ws://localhost:8081"); // local only
+var socket = new WebSocket('wss://formula0.julesyan.com:8081'); // server only
 
 let counter = 0;
 let countdown = 3;
