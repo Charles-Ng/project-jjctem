@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { Home } from "./Home";
 
+
 export class Signup extends Component {
   state = {
     username: "",
@@ -117,3 +118,5 @@ export class Signup extends Component {
     );
   }
 }
+
+export default withRouter(Signup)

@@ -6,7 +6,7 @@ export class Home extends React.Component {
   constuctor() {
     this.routeChange = this.routeChange.bind(this);
   }
-  
+
   openGame() {
     let path = `Game.js`;
     this.props.history.push(path);
