@@ -5,7 +5,7 @@ const server = require("http").Server(app);
 
 const io = (module.exports.io = require("socket.io")(server));
 
-app.use(express.static(__dirname + "../public/index.html"));
+app.use(express.static(__dirname + "../build"));
 var clickCount = 0;
 
 const players = {};
