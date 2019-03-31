@@ -8,37 +8,25 @@ export class Root extends React.Component {
     if (this.props.location.state == undefined) {
       return (
         // if user didnt signin or singup
-        <div className="container">
-          <div className="row">
-            <div className="col-xs-10 col-xs-offset-1">
-                <nav className="navbar navbar-default">
-                  <div>
-                    <NavLink to={"/home"}>Home</NavLink>
-                    <NavLink to={"/signin"}>Signin</NavLink>
-                    <NavLink to={"/signup"}>Signup</NavLink>
-                  </div>
-                </nav>
-            </div>
+        <nav className="navbar navbar-default">
+          <div>
+            <NavLink to={"/home"}>Home</NavLink>
+            <NavLink to={"/signin"}>Signin</NavLink>
+            <NavLink to={"/signup"}>Signup</NavLink>
           </div>
-        </div>
+        </nav>
       );
     }
     if (this.props.location.state.checkLogin == true) {
       // if user signed up
       return (
-        <div className="container">
-            <div className="row">
-                <div className="col-xs-10 col-xs-offset-1">
-                    <nav className="navbar navbar-default">
-                      <div>
-                        <NavLink to={"/home"}>Home</NavLink>
-                        <NavLink to={"/logout"}>Logout</NavLink>
-                        <NavLink to={"/game"}>Game</NavLink>
-                      </div>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <nav className="navbar navbar-default">
+          <div>
+            <NavLink to={"/home"}>Home</NavLink>
+            <NavLink to={"/logout"}>Logout</NavLink>
+            <NavLink to={"/game"}>Game</NavLink>
+          </div>
+        </nav>
       );
     }
   }
