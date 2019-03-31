@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import { Link, NavLink, withRouter, BrowserRouter } from "react-router-dom";
 
 import { Navbar } from "./navbar";
-import logo from './logo.png';
+import logo from './logo.PNG';
 
 export class Root extends React.Component {
   render() {
-    this.load.image("logo", "assets/logo.png");
     if (this.props.location == undefined || this.props.location.state == undefined) {
       return (
         // if user didnt signin or singup
