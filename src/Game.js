@@ -3,6 +3,7 @@ import Phaser from "phaser";
 import { subscribeToTimer, buttonClicked, newPlayer } from "./api";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import Race from "./scenes/race";
+import io from "socket.io-client";
 const socket = io();
 export class Game extends React.Component {
   componentDidMount() {

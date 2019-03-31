@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import { Route, IndexRoute, BrowserRouter as Router } from "react-router-dom";
-
+import io from "socket.io-client";
 import { Root } from "./Root";
 import { Home } from "./Home";
 import { Signup } from "./Signup";
