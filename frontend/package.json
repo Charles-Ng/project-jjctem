@@ -1,0 +1,42 @@
+{
+  "name": "phaserGame",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bufferutil": "4.0.1",
+    "concurrently": "^4.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "http-server": "^0.11.1",
+    "node": "10.15.0",
+    "phaser": "^3.16.2",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.8",
+    "socket.io": "^2.2.0",
+    "utf-8-validate": "5.0.2",
+    "ws": "6.2.1"
+  },
+  "scripts": {
+    "start_something": "concurrently 'npm run start' 'npm run server'",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "server": "node ./src/server.js"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "engines": {
+    "node": "10.3.0"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
