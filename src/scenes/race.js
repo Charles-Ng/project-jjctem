@@ -7,8 +7,9 @@ import openSocket from "socket.io-client";
 import io from "socket.io-client";
 import { checkSocketIoConnect } from "./../api";
 
+//var HOST = location.origin.replace(/^http/, 'ws')
 //var HOST = location.origin.replace(/^http/, 'ws');
-var socket = new WebSocket("ws://localhost:8000");
+var socket = new WebSocket("ws://forumla0.herokuapp.com");
 //const s_ip = 'https://forumla0.herokuapp.com/';
 // const socket = openSocket("http://localhost:8000");
 //const  socket = openSocket('https://forumla0.herokuapp.com/');
