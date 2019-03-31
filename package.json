@@ -17,16 +17,15 @@
     "socket.io": "^2.2.0"
   },
   "scripts": {
-    "start_something": "concurrently 'npm run start' 'npm run server'",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "server": "node src/server.js"
+   
+    "project-install": "npm install --prefix project",
+    "start": "node server.js",
+    "project": "npm start --prefix project"
+  
+    
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
+
+ 
   "browserslist": [
     ">0.2%",
     "not dead",
