@@ -17,8 +17,11 @@
     "socket.io": "^2.2.0"
   },
   "scripts": {
-    "start": "node server.js",
-    "heroku-postbuild": "cd project-jjctem && npm install --only=dev && npm install && npm run build"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "cd src && node server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
