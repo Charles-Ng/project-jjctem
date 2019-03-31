@@ -41,6 +41,7 @@ router.post('/', function(req, res, next){
         if (err) return res.send(err);
         if (user.length) {
             done = true;
+            console.log("sfs");
             return res.send("username " + username + " already exists");
         }
     });

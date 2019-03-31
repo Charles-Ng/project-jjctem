@@ -16,7 +16,8 @@ export class Signup extends Component {
   state = {
     username: "",
     password: "",
-    redirectState: false
+    redirectState: false,
+    error: ""
   };
 
   onChange = e => {
@@ -27,15 +28,15 @@ export class Signup extends Component {
 
   submitForm = e => {
     e.preventDefault();
-    console.log(this);
     const { match, location, history } = this.props
     let _this = this;
+    console.log(this);
     if (_this.state.password.length >= 8 && _this.state.password.length > 0) {
-        fetch(`{config.BACKEND_URL}/api/user/login`, {
+        fetch(config.BACKEND_URL + '/api/user/signup', {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 username: _this.state.username,
@@ -45,10 +46,12 @@ export class Signup extends Component {
         .then(response => response.json())
         .then(function(data){
             console.log(data);
+            console.log(typeof(data));
             _this.setState({
                 username: "",
                 password: "" ,
-                content: data.user.username
+                content: data.user.username,
+                error: ""
             });
             history.push({
                 pathname: "/",
@@ -57,9 +60,10 @@ export class Signup extends Component {
             });
         });
     } else {
-        _this.setState({ password: "" });
-        // **** Need to NOT use alerts ****************************************************************************
-        alert("Password has to be at least 8 characters!");
+        _this.setState({
+            password: "",
+            error: "Password has to be at least 8 characters"
+        });
     }
   };
 
@@ -90,6 +94,10 @@ export class Signup extends Component {
                            value={this.state.password}
                            onChange={e => this.onChange(e)}
                     />
+                </div>
+
+                <div className="error_msg">
+                    {this.state.error}
                 </div>
 
                 <div className="createAccount">

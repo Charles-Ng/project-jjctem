@@ -15,7 +15,8 @@ export class Signin extends Component {
   state = {
     username: "",
     password: "",
-    redirectState: false
+    redirectState: false,
+    error: ""
   };
 
   onChange = e => {
@@ -49,7 +50,8 @@ export class Signin extends Component {
         _this.setState({
             username: "",
             password: "" ,
-            content: data.user.username
+            content: data.user.username,
+            error: ""
         });
         history.push({
             pathname: "/",
@@ -94,6 +96,10 @@ export class Signin extends Component {
                            value={this.state.password}
                            onChange={e=>this.onChange(e)}
                     />
+                </div>
+
+                <div className="error_msg">
+                    {this.state.error}
                 </div>
 
                 <button type="submit">Sign In</button>

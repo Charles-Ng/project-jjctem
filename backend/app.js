@@ -4,6 +4,7 @@
 */
 const config = require('../frontend/src/config.js');
 const express = require('express')
+    , cors = require('cors')
     , routes = require(__dirname + '/routes/index.js')
     , http = require('http')
     , path = require('path')
@@ -47,6 +48,11 @@ app.use(function (req, res, next){
   console.log("HTTP request", req.method, req.url, req.body);
   next();
 });
+
+
+
+// handling option requests
+app.options('*', cors());
 
 
 
