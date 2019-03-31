@@ -6,17 +6,22 @@ import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import openSocket from "socket.io-client";
 import io from "socket.io-client";
 import { checkSocketIoConnect } from "./../api";
+
+//var HOST = location.origin.replace(/^http/, 'ws');
+var socket = new WebSocket('ws://localhost:8000');
 //const s_ip = 'https://forumla0.herokuapp.com/';
 // const socket = openSocket("http://localhost:8000");
 //const  socket = openSocket('https://forumla0.herokuapp.com/');
 // const socket = io("http://localhost:3000");
 //const socket = io('https://forumla0.herokuapp.com/');
-const socket = io.connect("http://formula0.julesyan.com", {path:'/socket'});
+//const socket = io.connect("http://formula0.julesyan.com", {path:'/socket'});
 // const socket = io.connect("http://formula0.julesyan.com:8081", {path: "/", rejectUnauthorized: false, secure: true});
 // const socket = io("http://localhost:8081");
 let counter = 0;
 let otherPlayers = {};
-
+let game;
+var id = Math.random().toString(36).substr(2,5);
+//let socketer;
 export default class Race extends Phaser.Scene {
   preload() {
     this.load.image("universe", "assets/universe.png");
@@ -29,15 +34,16 @@ export default class Race extends Phaser.Scene {
   create() {
 
 
-      checkSocketIoConnect().then(function() {
-          console.log("success");
-      }, function(reason) {
-          console.log("failure");
-          console.log(reason);
-      });
+      // checkSocketIoConnect().then(function() {
+      //     console.log("success");
+      // }, function(reason) {
+      //     console.log("failure");
+      //     console.log(reason);
+      // });
 
 
     let finished = false;
+    game = this;
     //socket = openSocket(s_ip);
     // Here we set the bounds of our game world
     this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
@@ -71,20 +77,25 @@ export default class Race extends Phaser.Scene {
     });
     //this.speed = 0;
     // create local player(car)
-
-    this.player = player(50, 550, this, socket);
+    // var slat = {type: "slat", text:"wow"};
+    // socket.send(JSON.stringify(slat));
+    
+    //console.log(id);
+    this.player = player(50, 550, this, socket, id);
     this.player.playerName = createText(this, this.player.sprite.body);
     this.player.speedText = createText(this, this.player.sprite.body);
-
+    //console.log('why empty' + this.player.playerName.text);
+    //playa = this.player;
     // this.car = this.physics.add.sprite(50, 800, "car").setScale(0.5);
     //createPlayer(socket, this.player);
-
-    socket.emit("newPlayer", {
-      x: this.player.sprite.body.x,
+    var newplayer = {
+      type:"new-player",
+      details: {
+        x: this.player.sprite.body.x,
       y: this.player.sprite.body.y,
       angle: this.player.sprite.rotation,
       playerName: {
-        name: String(socket.id),
+        name: id,
         x: this.player.playerName.x,
         y: this.player.playerName.y
       },
@@ -94,25 +105,26 @@ export default class Race extends Phaser.Scene {
         y: this.player.speedText.y
       },
       finish:false
-
-    });
-    // //this.angle = this.car.rotation;
-    // this.car.speed = 0;
-    this.player.sprite.setCollideWorldBounds(true);
-    this.physics.add.collider(this.player.sprite, bumper);
-
-    socket.on("update-players", playersData => {
+      }
+    };
+    socket.send(JSON.stringify(newplayer));
+    socket.onmessage =  function(event) {
+      var playersData = JSON.parse(event.data);
       //console.log(playersData);
       let playersFound = {};
       // Iterate over all players
       for (let index in playersData) {
         const data = playersData[index];
+       //  console.log(index);
+       //  console.log(data);
+       console.log(data.playerName.name);
+       console.log(id);
         // In case a player hasn't been created yet
         // We make sure that we won't create a second instance of it
-        if (otherPlayers[index] === undefined && index !== socket.id) {
-          const newPlayer = player(data.x, data.y, this);
-          newPlayer.playerName = createText(this, newPlayer);
-          newPlayer.speedText = createText(this, newPlayer);
+        if (otherPlayers[index] === undefined && data.playerName.name !== id) {
+          const newPlayer = player(data.x, data.y, game, socket, data.playerName.name);
+          newPlayer.playerName = createText(game, newPlayer);
+          newPlayer.speedText = createText(game, newPlayer);
           newPlayer.updatePlayerName(
             data.playerName.name,
             data.playerName.x,
@@ -124,7 +136,7 @@ export default class Race extends Phaser.Scene {
         playersFound[index] = true;
 
         // Update players data
-        if (index !== socket.id) {
+        if (data.playerName.name !== id) {
           // Update players target but not their real position
           otherPlayers[index].target_x = data.x;
           otherPlayers[index].target_y = data.y;
@@ -142,15 +154,79 @@ export default class Race extends Phaser.Scene {
       }
 
       // Check if there's no missing players, if there is, delete them
-      for (let id in otherPlayers) {
-        if (!playersFound[id]) {
-          otherPlayers[id].sprite.destroy();
-          otherPlayers[id].playerName.destroy();
-          otherPlayers[id].speedText.destroy();
-          delete otherPlayers[id];
+      for (let idz in otherPlayers) {
+        if (!playersFound[idz]) {
+          otherPlayers[idz].sprite.destroy();
+          otherPlayers[idz].playerName.destroy();
+          otherPlayers[idz].speedText.destroy();
+          delete otherPlayers[idz];
         }
       }
-    });
+      //console.log(data);
+   };
+    // socket.onclose = function() {
+    //   //console.log('wow');
+    //   //  socket.send(JSON.stringify(
+    //   //    {slat:id}
+    //   //  ));
+    //   socket.close({code:1000, reason:id});
+    // };
+    // //this.angle = this.car.rotation;
+    // this.car.speed = 0;
+    this.player.sprite.setCollideWorldBounds(true);
+    this.physics.add.collider(this.player.sprite, bumper);
+    
+    this.player.playerName = createText(this, this.player.sprite.body);
+    // socket.on("update-players", playersData => {
+    //   //console.log(playersData);
+      // let playersFound = {};
+      // // Iterate over all players
+      // for (let index in playersData) {
+      //   const data = playersData[index];
+      //   // In case a player hasn't been created yet
+      //   // We make sure that we won't create a second instance of it
+      //   if (otherPlayers[index] === undefined && index !== socket.id) {
+      //     const newPlayer = player(data.x, data.y, this);
+      //     newPlayer.playerName = createText(this, newPlayer);
+      //     newPlayer.speedText = createText(this, newPlayer);
+      //     newPlayer.updatePlayerName(
+      //       data.playerName.name,
+      //       data.playerName.x,
+      //       data.playerName.y
+      //     );
+      //     otherPlayers[index] = newPlayer;
+      //   }
+
+      //   playersFound[index] = true;
+
+      //   // Update players data
+      //   if (index !== socket.id) {
+      //     // Update players target but not their real position
+      //     otherPlayers[index].target_x = data.x;
+      //     otherPlayers[index].target_y = data.y;
+      //     otherPlayers[index].target_rotation = data.angle;
+
+      //     otherPlayers[index].playerName.target_x = data.playerName.x;
+      //     otherPlayers[index].playerName.target_y = data.playerName.y;
+
+      //     otherPlayers[index].speedText.target_x = data.speed.x;
+      //     otherPlayers[index].speedText.target_y = data.speed.y;
+
+      //     otherPlayers[index].speed = data.speed.value;
+      //     otherPlayers[index].finish = data.finish;
+      //   }
+      // }
+
+      // // Check if there's no missing players, if there is, delete them
+      // for (let id in otherPlayers) {
+      //   if (!playersFound[id]) {
+      //     otherPlayers[id].sprite.destroy();
+      //     otherPlayers[id].playerName.destroy();
+      //     otherPlayers[id].speedText.destroy();
+      //     delete otherPlayers[id];
+      //   }
+      // }
+    // });
 
 
 
@@ -161,6 +237,62 @@ export default class Race extends Phaser.Scene {
 
   update() {
     this.player.drive(this);
+    socket.onmessage =  function(event) {
+      var playersData = JSON.parse(event.data);
+      //console.log(playersData);
+      let playersFound = {};
+      // Iterate over all players
+      for (let index in playersData) {
+        const data = playersData[index];
+       //  console.log(index);
+       //  console.log(data);
+       console.log(data.playerName.name);
+       console.log(id);
+        // In case a player hasn't been created yet
+        // We make sure that we won't create a second instance of it
+        if (otherPlayers[index] === undefined && data.playerName.name !== id) {
+          const newPlayer = player(data.x, data.y, game, socket, data.playerName.name);
+          newPlayer.playerName = createText(game, newPlayer);
+          newPlayer.speedText = createText(game, newPlayer);
+          newPlayer.updatePlayerName(
+            data.playerName.name,
+            data.playerName.x,
+            data.playerName.y
+          );
+          otherPlayers[index] = newPlayer;
+        }
+
+        playersFound[index] = true;
+
+        // Update players data
+        if (data.playerName.name !== id) {
+          // Update players target but not their real position
+          otherPlayers[index].target_x = data.x;
+          otherPlayers[index].target_y = data.y;
+          otherPlayers[index].target_rotation = data.angle;
+
+          otherPlayers[index].playerName.target_x = data.playerName.x;
+          otherPlayers[index].playerName.target_y = data.playerName.y;
+
+          otherPlayers[index].speedText.target_x = data.speed.x;
+          otherPlayers[index].speedText.target_y = data.speed.y;
+
+          otherPlayers[index].speed = data.speed.value;
+          otherPlayers[index].finish = data.finish;
+        }
+      }
+
+      // Check if there's no missing players, if there is, delete them
+      for (let idz in otherPlayers) {
+        if (!playersFound[idz]) {
+          otherPlayers[idz].sprite.destroy();
+          otherPlayers[idz].playerName.destroy();
+          otherPlayers[idz].speedText.destroy();
+          delete otherPlayers[idz];
+        }
+      }
+      //console.log(data);
+   };
     for (let id in otherPlayers) {
       // console.log(otherPlayers);
       let player = otherPlayers[id];
@@ -208,11 +340,13 @@ export default class Race extends Phaser.Scene {
     if (this.player.sprite.x == this.finishLine.x ) {
       // add what u wanna do here!!!!!!!!
       if (counter == 0) {
-        socket.emit("finished", {
-          finish: true
-        });
+        var finish = {type:'finish', details:id};
+        socket.send(JSON.stringify(finish));
+        // socket.send("finished", {
+        //   finish: true
+        // });
         this.text.setText("YOU WIN");
-        this.player.playerFinished();
+       // this.player.playerFinished();
         counter++;
       }
 

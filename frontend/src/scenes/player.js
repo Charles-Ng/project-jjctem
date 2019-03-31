@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 //import {isDown} from "./isdown";
 
-export default function(x, y, game, socket) {
+export default function(x, y, game, socket, id) {
   const player = {
     socket,
     sprite: game.physics.add.sprite(x, y, "car").setScale(0.05),
@@ -77,8 +77,8 @@ export default function(x, y, game, socket) {
       );
     },
     emitPlayerData() {
-      // Emit the 'move-player' event, updating the player's data on the server
-      socket.emit("move-player", {
+      //socket.send("move-player", "haha");
+      var move = { type: 'move', details: {
         x: this.sprite.body.x,
         y: this.sprite.body.y,
         angle: this.sprite.body.rotation,
@@ -91,16 +91,36 @@ export default function(x, y, game, socket) {
           value: this.speed,
           x: this.speedText.x,
           y: this.speedText.y
-        }
-      });
+        }}
+      };
+      socket.send(JSON.stringify(move));
+      // Emit the 'move-player' event, updating the player's data on the server
+      // socket.emit("move-player", {
+      //   x: this.sprite.body.x,
+      //   y: this.sprite.body.y,
+      //   angle: this.sprite.body.rotation,
+      //   playerName: {
+      //     name: this.playerName.text,
+      //     x: this.playerName.x,
+      //     y: this.playerName.y
+      //   },
+      //   speed: {
+      //     value: this.speed,
+      //     x: this.speedText.x,
+      //     y: this.speedText.y
+      //   }
+      // });
     },
     updatePlayerName(
-      name = this.socket.id,
+      //ADD ACCOUNT USER NAME
+      name = id,
       x = this.sprite.body.x - 57,
       y = this.sprite.body.y - 59
     ) {
       // Updates the player's name text and position
-      this.playerName.text = String(name);
+      //console.log('inside player' + String(id));
+
+      this.playerName.text = String(id);
       this.playerName.x = x;
       this.playerName.y = y;
       // Bring the player's name to top
