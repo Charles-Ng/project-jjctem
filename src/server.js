@@ -1,8 +1,9 @@
+/*jshint esversion: 6*/
 const express = require("express");
 const app = express();
 app.use(express.static("project"));
 var server = require("http").Server(app);
-const port = 8000;
+const port = process.env.PORT|| 8000;
 server.listen(port, function(err) {
   if (err) throw err;
   console.log(`listening on port ${port}`);
