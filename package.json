@@ -18,14 +18,15 @@
   },
   "scripts": {
    
-    "project-install": "npm install --prefix project",
-    "start": "node server.js",
-    "project": "npm start --prefix project"
-  
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
     
   },
-
- 
+  "eslintConfig": {
+    "extends": "react-app"
+  },
   "browserslist": [
     ">0.2%",
     "not dead",

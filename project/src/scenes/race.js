@@ -3,28 +3,21 @@ import player from "./player";
 import { createText } from "./isdown.js";
 //import createPlayer from "./createPlayer.js";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
-import openSocket from "socket.io-client";
+//import openSocket from "socket.io-client";
 import io from "socket.io-client";
 //const s_ip = 'https://forumla0.herokuapp.com/';
-// const socket = openSocket("http://localhost:8000");
+//const socket = openSocket("http://localhost:8000");
 //const  socket = openSocket('https://forumla0.herokuapp.com/');
-// const socket = io("http://localhost:3000");
+import io from "socket.io-client";
 //const socket = io('https://forumla0.herokuapp.com/');
-// const socket = io("http://formula0.julesyan/com:8000");
-//const socket = io("http://localhost:8000");
-const socket = io("/");
-let counter = 0;
+const socket = io();
 let otherPlayers = {};
-let countdown = 3;
-let startcount = 0;
-let second = 0;
 export default class Race extends Phaser.Scene {
   preload() {
     this.load.image("universe", "assets/universe.png");
-    this.load.image("finishline", "assets/redline.png");
     this.load.image("car", "assets/dog.png");
     this.load.image("tileset", "assets/Tiles/trackSVG.svg");
-    this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track Final.json");
+    this.load.tilemapTiledJSON("track", "assets/Tiles/Race Track 3.json");
   }
   create() {
     //socket = openSocket(s_ip);
@@ -40,26 +33,26 @@ export default class Race extends Phaser.Scene {
     //     groundTiles.push(groundSprite);
     //   }
     // }
-
-    // let background_image = this.add.sprite(
-    //   GAME_WIDTH / 2,
-    //   GAME_HEIGHT / 2,
-    //   "universe"
-    // );
-    // background_image.height = this.GAME_HEIGHT;
-    // background_image.width = this.GAME_WIDTH;
-
+    let background_image = this.add.sprite(
+      GAME_WIDTH / 2,
+      GAME_HEIGHT / 2,
+      "universe"
+    );
+    background_image.height = this.GAME_HEIGHT;
+    background_image.width = this.GAME_WIDTH;
     let map = this.make.tilemap({ key: "track" });
-    let tileset = map.addTilesetImage("bumper", "tileset");
-    let tileset2 = map.addTilesetImage("background", "universe");
-    let background2 = map.createStaticLayer("Tile Layer 3", tileset2, 0, 0);
+    let tileset = map.addTilesetImage("trackSVG", "tileset");
     let background = map.createStaticLayer("Tile Layer 2", tileset, 0, 0);
     let bumper = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
     bumper.setCollisionByProperty({ collides: true });
-
+    // testing text
+    const text = this.add.text(250, 250, "Doggo race", {
+      backgroundColor: "black",
+      color: "blue",
+      fontSize: 48
+    });
     //this.speed = 0;
     // create local player(car)
-
     this.player = player(50, 550, this, socket);
     this.player.playerName = createText(this, this.player.sprite.body);
     this.player.speedText = createText(this, this.player.sprite.body);
@@ -80,9 +73,7 @@ export default class Race extends Phaser.Scene {
         value: this.player.speed,
         x: this.player.speedText.x,
         y: this.player.speedText.y
-      },
-      finish: false,
-      start: false
+      }
     });
     // //this.angle = this.car.rotation;
     // this.car.speed = 0;
@@ -125,8 +116,6 @@ export default class Race extends Phaser.Scene {
           otherPlayers[index].speedText.target_y = data.speed.y;
 
           otherPlayers[index].speed = data.speed.value;
-          otherPlayers[index].finish = data.finish;
-          otherPlayers[index].start = data.start;
         }
       }
 
@@ -140,101 +129,13 @@ export default class Race extends Phaser.Scene {
         }
       }
     });
-
-    this.finishLine = this.physics.add.sprite(4975, 320, "finishline");
-    this.finishLine.scaleY = 0.1;
-    this.finishLine.setPosition(4975, 320);
-    this.cameras.main.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    this.cameras.main.startFollow(this.player.sprite);
-    this.cameras.main.setZoom(1);
-
-    this.startLine = this.physics.add.sprite(150, 600, "finishline");
-    this.startLine.scaleY = 0.1;
-    this.startLine.setImmovable();
-    this.physics.add.collider(this.player.sprite, this.startLine);
-
-    this.timer = this.add
-      .text(32, 32, { colour: "white", fontSize: 100 })
-      .setScrollFactor(0);
-
-    this.second = 0;
-    this.start_text = this.add
-      .text(100, 200, "Press me to Start!", {
-        color: "white",
-        fontSize: 50
-      })
-      .setStroke("Blue", 10)
-      .setInteractive()
-      .on("pointerdown", () =>
-        this.setStart(this.start_text, this.player, this)
-      );
-  }
-
-  setStart(text, player, game) {
-    socket.emit("started", {
-      start: true
-    });
-
-    player.playerStarted();
-    game.start_timer(text, game);
-  }
-
-  start_timer(text, game) {
-    game.time.addEvent({
-      delay: 1000,
-      callback: function() {
-        game.displayTimer(text, game);
-      },
-      repeat: 4
-    });
-  }
-  displayTimer(text, game) {
-    if (countdown > 0) {
-      text.setText(countdown);
-      countdown = countdown - 1;
-    } else if (countdown == 0) {
-      text.setText("GO");
-      countdown = countdown - 1;
-    } else {
-      text.destroy();
-      game.startLine.destroy();
-
-      game.timedEvent = game.time.addEvent({
-        delay: 1000,
-        callback: function() {
-          game.second += 1;
-        },
-        loop: true
-      });
-    }
   }
 
   update() {
-    let won = true;
-    if (this.timedEvent != undefined) {
-      this.timer.setText(
-        "Time: " +
-          this.second +
-          this.timedEvent
-            .getProgress()
-            .toString()
-            .substr(1, 3)
-      );
-
-      this.time_track =
-        this.second +
-        this.timedEvent
-          .getProgress()
-          .toString()
-          .substr(1, 3);
-    } else this.timer.setText("Time: 0");
-
     this.player.drive(this);
-
-    for (let i in otherPlayers) {
+    for (let id in otherPlayers) {
       // console.log(otherPlayers);
-      let player = otherPlayers[i];
-
+      let player = otherPlayers[id];
       if (player.target_x !== undefined) {
         // Interpolate the player's position
 
@@ -268,52 +169,8 @@ export default class Race extends Phaser.Scene {
           player.speedText.y,
           player.speedText
         );
-
-        if (player.start === true) {
-          if (startcount == 0) {
-            this.start_timer(this.start_text, this);
-          }
-          startcount++;
-        }
-
-        if (player.finish == true) {
-          if (this.player.finish != true) {
-            this.text = this.add.text(4500, 100, "", {
-              backgroundColor: "black",
-              color: "blue",
-              fontSize: 80
-            });
-
-            this.text.setText("YOU LOST");
-            won = false;
-          }
-        }
       }
     }
-
-    if (this.player.sprite.x > this.finishLine.x - 10) {
-      // add what u wanna do here!!!!!!!!
-
-      if (counter == 0) {
-        socket.emit("finished", {
-          finish: true
-        });
-
-        if (won == true) {
-          this.text = this.add.text(4500, 100, "", {
-            backgroundColor: "black",
-            color: "blue",
-            fontSize: 80
-          });
-          this.text.setText("YOU WIN");
-        }
-
-        this.player.playerFinished();
-        this.timedEvent.paused = true;
-        counter++;
-      }
-    }
-
     // // drive forward if up is pressed
     // if (this.cursors.up.isDown && this.car.speed <= 400) {
     //   this.car.speed += 20;

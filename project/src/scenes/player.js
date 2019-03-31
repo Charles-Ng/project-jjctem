@@ -7,8 +7,7 @@ export default function(x, y, game, socket) {
     sprite: game.physics.add.sprite(x, y, "car").setScale(0.05),
     playerName: null,
     speed: 0,
-    finish: false,
-    start: false,
+
     speedText: null,
     drive(game) {
       //this.
@@ -31,7 +30,7 @@ export default function(x, y, game, socket) {
       this.emitPlayerData();
 
       // drive forward if up is pressed
-      if (game.cursors.up.isDown && this.speed <= 500) {
+      if (game.cursors.up.isDown && this.speed <= 400) {
         this.speed += 20;
       } else {
         if (this.speed >= 20) {
@@ -77,7 +76,6 @@ export default function(x, y, game, socket) {
         this.speedText
       );
     },
-
     emitPlayerData() {
       // Emit the 'move-player' event, updating the player's data on the server
       socket.emit("move-player", {
@@ -93,9 +91,7 @@ export default function(x, y, game, socket) {
           value: this.speed,
           x: this.speedText.x,
           y: this.speedText.y
-        },
-        finish: this.finish,
-        start: this.start
+        }
       });
     },
     updatePlayerName(
@@ -121,14 +117,6 @@ export default function(x, y, game, socket) {
       text.y = y;
       text.text = `${capitalizedStatus}: ${parseInt(this.newText)}`;
       //game.world.bringToTop(text)
-    },
-
-    playerFinished() {
-      this.finish = true;
-    },
-
-    playerStarted() {
-      this.start = true;
     }
   };
   return player;
