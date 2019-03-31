@@ -7,7 +7,6 @@ import { Home } from "./Home";
 import { Signup } from "./Signup";
 import { Signin } from "./Signin";
 import {Game} from "./Game";
-import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 
 import "./style/App.css";
