@@ -8,6 +8,7 @@ export default function(x, y, game, socket) {
     playerName: null,
     speed: 0,
     finish: false,
+    start: false,
     speedText: null,
     drive(game) {
       //this.
@@ -30,7 +31,7 @@ export default function(x, y, game, socket) {
       this.emitPlayerData();
 
       // drive forward if up is pressed
-      if (game.cursors.up.isDown && this.speed <= 400) {
+      if (game.cursors.up.isDown && this.speed <= 500) {
         this.speed += 20;
       } else {
         if (this.speed >= 20) {
@@ -93,7 +94,8 @@ export default function(x, y, game, socket) {
           x: this.speedText.x,
           y: this.speedText.y
         },
-        finish:false
+        finish: this.finish,
+        start: this.start
       });
     },
     updatePlayerName(
@@ -123,6 +125,10 @@ export default function(x, y, game, socket) {
 
     playerFinished() {
       this.finish = true;
+    },
+
+    playerStarted() {
+      this.start = true;
     }
   };
   return player;

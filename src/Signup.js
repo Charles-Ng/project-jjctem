@@ -27,7 +27,10 @@ export class Signup extends Component {
     console.log(this.state);
     if (this.state.password.length >= 8 && this.state.password.length > 0) {
       this.setState({ username: "", password: "" });
-      this.props.history.push("/Home");
+      this.props.history.push({
+        pathname: "/Root",
+        state: { checkLogin: true }
+      });
     } else {
       this.setState({ password: "" });
       alert("Password has to be at least 8 characters!");
