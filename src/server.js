@@ -1,7 +1,7 @@
 /*jshint esversion: 6*/
 const express = require("express");
 const app = express();
-app.use(express.static("public"));//
+app.use(express.static("project"));//
 var server = require("http").Server(app);
 const port = process.env.PORT|| 8000;
 server.listen(port, function(err) {
