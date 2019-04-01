@@ -18,6 +18,9 @@ let started = false;
 var id = Math.random()
   .toString(36)
   .substr(2, 5);
+ let playerID = cookies.get("user");
+
+
 //let socketer;
 export default class Race extends Phaser.Scene {
     preload() {
@@ -191,7 +194,12 @@ export default class Race extends Phaser.Scene {
             const data = playersData[index];
             // In case a player hasn't been created yet
             // We make sure that we won't create a second instance of it
-            if (otherPlayers[index] === undefined && data.playerName.name !== '' && data.playerName.name !== id) {
+            if (
+              otherPlayers[index] == undefined &&
+              data.playerName.name != "" &&
+              data.playerName.name != undefined &&
+              data.playerName.name != playerID
+            ) {
                 const newPlayer = player(
                     data.x,
                     data.y,
@@ -212,7 +220,11 @@ export default class Race extends Phaser.Scene {
             playersFound[index] = true;
 
             // Update players data
-            if (data.playerName.name !== id && data.playerName.name !== '') {
+            if (
+              data.playerName.name !== playerID &&
+              data.playerName.name !== "" &&
+              data.playerName.name != undefined
+            ) {
                 // Update players target but not their real position
                 otherPlayers[index].target_x = data.x;
                 otherPlayers[index].target_y = data.y;
