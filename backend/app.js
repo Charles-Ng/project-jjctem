@@ -60,7 +60,7 @@ app.use(function (req, res, next){
 
 
 // handling option requests
-var whitelist = ['https://forumla0.julesyan.co', 'https://julesyan.com', 'http://localhost', 'http://formula0.julesyan.com', 'http://julesyan.com'];
+var whitelist = ['https://forumla0.julesyan.com', 'https://julesyan.com', 'http://localhost', 'http://formula0.julesyan.com', 'http://julesyan.com'];
 var corsOptions = {
     origin: function(origin, callback){
         var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
