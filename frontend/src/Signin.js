@@ -8,7 +8,9 @@ import {
   withRouter
 } from "react-router-dom";
 import { Home } from "./Home";
+import Cookies from 'universal-cookie';
 const config = require('./config.js');
+const cookies = new Cookies();
 
 
 export class Signin extends Component {
@@ -27,12 +29,9 @@ export class Signin extends Component {
 
   submitForm = e => {
     e.preventDefault();
-    console.log(this.state);
-    // this.setState({ username: "", password: "" });
-    // this.props.history.push("/Home");
     const { match, location, history } = this.props
     let _this = this;
-    fetch(`{config.BACKEND_URL}/api/user/login`, {
+    fetch(config.BACKEND_URL + '/user/login', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -45,19 +44,21 @@ export class Signin extends Component {
     })
     .then(response => response.json())
     .then(function(data){
-        console.log(data);
-        console.log(typeof(data));
-        _this.setState({
-            username: "",
-            password: "" ,
-            content: data.user.username,
-            error: ""
-        });
-        history.push({
-            pathname: "/",
-            state: { checkLogin: true },
-            user: data.user
-        });
+        if (data.msg == "success") {
+            _this.setState({
+                username: "",
+                password: "" ,
+                content: data.user.username,
+                error: ""
+            });
+            cookies.set('user', data.user.username);
+            history.push({
+                pathname: "/",
+                state: { checkLogin: true },
+            });
+        } else {
+            _this.setState({error: data.msg});
+        }
     });
   };
 

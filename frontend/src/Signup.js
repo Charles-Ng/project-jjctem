@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./style/user.css";
-
 import {
   Link,
   NavLink,
@@ -9,8 +8,10 @@ import {
   withRouter
 } from "react-router-dom";
 import { Home } from "./Home";
-const config = require('./config.js');
 import { Root } from "./Root";
+import Cookies from 'universal-cookie';
+const config = require('./config.js');
+const cookies = new Cookies();
 
 export class Signup extends Component {
   state = {
@@ -30,9 +31,8 @@ export class Signup extends Component {
     e.preventDefault();
     const { match, location, history } = this.props
     let _this = this;
-    console.log(this);
     if (_this.state.password.length >= 8 && _this.state.password.length > 0) {
-        fetch(config.BACKEND_URL + '/api/user/signup', {
+        fetch(config.BACKEND_URL + '/user/signup', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -45,19 +45,21 @@ export class Signup extends Component {
         })
         .then(response => response.json())
         .then(function(data){
-            console.log(data);
-            console.log(typeof(data));
-            _this.setState({
-                username: "",
-                password: "" ,
-                content: data.user.username,
-                error: ""
-            });
-            history.push({
-                pathname: "/",
-                state: { checkLogin: true },
-                user: data.user.username
-            });
+            if (data.msg == "success") {
+                _this.setState({
+                    username: "",
+                    password: "" ,
+                    content: data.user.username,
+                    error: ""
+                });
+                cookies.set('user', data.user.username);
+                history.push({
+                    pathname: "/",
+                    state: { checkLogin: true },
+                });
+            } else {
+                _this.setState({error: data.msg});
+            }
         });
     } else {
         _this.setState({

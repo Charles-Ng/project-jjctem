@@ -57,7 +57,6 @@ nav{
     border: 0;
     font-size: 12px;
     line-height: 1.5;
-    letter-spacing: 4px;
     border-radius: 0;
     padding-right: 15px;
     padding-left: 15px;
@@ -77,6 +76,10 @@ nav{
 nav img{
     max-height: 70px;
     margin: 10px;
+}
+
+nav .welcome{
+    padding-right: 10px;
 }
 
 nav .links{

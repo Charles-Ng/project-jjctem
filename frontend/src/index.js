@@ -7,6 +7,7 @@ import { Home } from "./Home";
 import { Signup } from "./Signup";
 import { Signin } from "./Signin";
 import { Game } from "./Game";
+import { Logout } from "./Logout";
 import { Footer } from "./footer";
 
 import "./style/App.css";
@@ -16,13 +17,13 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-          <Root />
           <div className="container">
             <Route path="/" component={Root} />
             <Route path="/signup" component={Signup} />
             <Route path="/signin" component={Signin} />
-            <Route path="/home" component={Home} />
+            <Route path="/" exact component={Home} />
             <Route path="/game" component={Game} />
+            <Route path="/logout" component={Logout} />
           </div>
           <Footer />
         </div>
