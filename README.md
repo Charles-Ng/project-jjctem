@@ -1,5 +1,7 @@
 # Forumla 0
 
+[link to our app]{https://formula0.julesyan.com/}
+
 ### Team members
 Here are our team members in no particular order
 
