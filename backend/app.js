@@ -55,13 +55,17 @@ app.use(function (req, res, next){
 
 
 // handling option requests
-// var whitelist = ['https://formula0.julesyan.com/api/*', 'https://julesyan.com', 'http://localhost'];
-var corsOptions = {
-  origin: function (origin, callback) {
-    callback(null, true)
+var whitelist = ['https://formula0.julesyan.com', 'https://julesyan.com', 'http://localhost'];
+var corsOptionsDelegate = function (req, callback) {
+  var corsOptions;
+  if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false } // disable CORS for this request
   }
+  callback(null, corsOptions) // callback expects two parameters: error and options
 };
-app.options('*', cors(corsOptions));
+app.options('*', cors(corsOptionsDelegate));
 // app.options('*', function(req, res, next){
 //     return cors();
 // });
