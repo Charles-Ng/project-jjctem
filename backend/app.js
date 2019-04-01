@@ -39,7 +39,7 @@ app.use(session({
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
-    // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
@@ -55,17 +55,16 @@ app.use(function (req, res, next){
 
 
 // handling option requests
-var whitelist = ['https://formula0.julesyan.com', 'https://julesyan.com', 'http://localhost'];
-var corsOptionsDelegate = function (req, callback) {
-  var corsOptions;
-  if (whitelist.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
-  } else {
-    corsOptions = { origin: false } // disable CORS for this request
-  }
-  callback(null, corsOptions) // callback expects two parameters: error and options
+var whitelist = ['https://formula0.julesyan.com', 'https://julesyan.com', 'http://localhost', 'http://formula0.julesyan.com', 'http://julesyan.com'];
+var corsOptions = {
+    origin: function(origin, callback){
+        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        callback(null, originIsWhitelisted);
+    },
+    credentials: true
 };
-app.options('*', cors(corsOptionsDelegate));
+
+app.options('*', cors(corsOptions));
 // app.options('*', function(req, res, next){
 //     return cors();
 // });
