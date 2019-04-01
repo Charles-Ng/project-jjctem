@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import player from "./player";
 import { createText } from "./isdown.js";
 import * as config from "../config.js";
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 
 // var HOST = location.origin.replace(/^http/, 'ws');
