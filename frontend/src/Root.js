@@ -17,6 +17,7 @@ export class Root extends React.Component {
                     </NavLink>
                     <div className="links">
                         <NavLink exact to={"/"} activeClassName="selected"><span>Home</span></NavLink>
+                        <NavLink to={"/leaderboard"} activeClassName="selected"><span>Leaderboard</span></NavLink>
                         <NavLink to={"/signin"} activeClassName="selected"><span>Sign In</span></NavLink>
                         <NavLink to={"/signup"} activeClassName="selected"><span>Sign Up</span></NavLink>
                     </div>
@@ -32,6 +33,7 @@ export class Root extends React.Component {
                         <div className="links">
                             <span className="welcome">Welcome {cookies.get('user')}</span>
                             <NavLink exact to={"/"} activeClassName="selected"><span>Home</span></NavLink>
+                            <NavLink to={"/leaderboard"} activeClassName="selected"><span>Leaderboard</span></NavLink>
                             <NavLink to={"/game"} activeClassName="selected"><span>Play</span></NavLink>
                             <NavLink to={"/logout"} activeClassName="selected"><span>Logout</span></NavLink>
                         </div>

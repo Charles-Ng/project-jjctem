@@ -8,6 +8,7 @@ import { Signup } from "./Signup";
 import { Signin } from "./Signin";
 import { Game } from "./Game";
 import { Logout } from "./Logout";
+import { Leaderboard } from "./Leaderboard";
 import { Footer } from "./footer";
 
 import "./style/App.css";
@@ -24,6 +25,7 @@ class App extends React.Component {
             <Route path="/" exact component={Home} />
             <Route path="/game" component={Game} />
             <Route path="/logout" component={Logout} />
+            <Route path="/leaderboard" component={Leaderboard} />
           </div>
           <Footer />
         </div>

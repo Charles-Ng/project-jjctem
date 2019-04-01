@@ -12,6 +12,8 @@ import Cookies from 'universal-cookie';
 const config = require('./config.js');
 const cookies = new Cookies();
 
+var leaderboard = {};
+
 
 export class Logout extends Component {
     state = {
@@ -23,10 +25,9 @@ export class Logout extends Component {
 
     componentWillMount(){
         // Call the logout on the user
-        fetch(config.BACKEND_URL + '/user/logout', {
+        fetch(config.BACKEND_URL + '/leaderboard', {
             method: 'GET',
         });
-        // Remove all user data
         cookies.remove('user');
         this.props.history.push('/');
     }
