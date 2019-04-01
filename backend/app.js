@@ -38,12 +38,12 @@ app.use(session({
 
 
 app.use(function(req, res, next) {
-    var whitelist = ['https://forumla0.julesyan.com', 'http://localhost'];
-    var origin = req.headers.origin;
-    if(whitelist.indexOf(origin) > -1){
-        res.setHeader('Access-Control-Allow-Origin', origin);
-    }
-    // res.header('Access-Control-Allow-Origin', '*');
+    // var whitelist = ['https://forumla0.julesyan.com', 'http://localhost'];
+    // var origin = req.headers.origin;
+    // if(whitelist.indexOf(origin) > -1){
+    //     res.setHeader('Access-Control-Allow-Origin', origin);
+    // }
+    res.header('Access-Control-Allow-Origin', 'https://forumla0.julesyan.com');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
