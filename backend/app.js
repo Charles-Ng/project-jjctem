@@ -35,6 +35,8 @@ app.use(session({
               saveUninitialized: true,
               cookie: { maxAge: 60000 }
           }));
+
+
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -53,7 +55,17 @@ app.use(function (req, res, next){
 
 
 // handling option requests
-app.options('*', cors());
+var whitelist = ['https://formula0.julesyan.com', 'https://julesyan.com', 'http://localhost'];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+};
+app.options('*', cors(corsOptions));
 // app.options('*', function(req, res, next){
 //     return cors();
 // });
