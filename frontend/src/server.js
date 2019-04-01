@@ -1,13 +1,12 @@
-const config = require('./config.js');
-const fs = require('fs');
+const config = require("./config.js");
+const fs = require("fs");
 const http = require(config.SERVER_TYPE);
 const express = require("express");
-const WebSocket = require('ws');
+const WebSocket = require("ws");
 const app = express();
 const port = config.SOCKET_PORT;
 const server = config.SOCKET_SERVER(http, app, fs);
-const io =  new WebSocket.Server({ server });
-
+const io = new WebSocket.Server({ server });
 
 app.use(express.static("project"));
 server.listen(port, function(err) {
@@ -20,10 +19,10 @@ var playerCount = 0;
 const players = {};
 io.on("connection", client => {
   var id = playerCount++;
-  console.log("Client connected");
+  console.log("Client " + id);
   client.on("close", function() {
     delete players[id];
-    console.log( players);
+    console.log(players);
     if (client.readyState !== undefined && client.readyState === 1) {
       client.send(JSON.stringify(players));
     }
@@ -36,6 +35,7 @@ io.on("connection", client => {
     }
     switch (current.type) {
       case "new-player":
+        console.log("making player");
         //current.details.playerName.name = "player " + playerCount;
         players[id] = current.details;
         // console.log("player " + playerCount + " joined");
