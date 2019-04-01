@@ -1,5 +1,7 @@
 const express = require('express')
+    , cookie = require('cookie')
     , router = express.Router()
+    , cors = require('cors')
     , crypto = require('crypto')
     , mysql = require('mysql');
 
@@ -21,13 +23,13 @@ function generateHash (password, salt){
 
 
 router.get('/', function(req, res, next){
-    return res.send('Success');
+    return res.json({msg: "Success"});
 });
 
 router.post('/', function(req, res, next){
     // extract data from HTTP request
     if (!('username' in req.body) || !('password' in req.body)) {
-        return res.send('Wrong Credentials');
+        return res.json({msg: 'Wrong Credentials'});
     }
     let post = req.body;
     // let email = post.email;
@@ -38,21 +40,12 @@ router.post('/', function(req, res, next){
     // Check existing username
     let sql = "SELECT * FROM users WHERE username = ? LIMIT 1";
     let query = db.query(sql, [username], function(err, user){
-        if (err) return res.send(err);
+        if (err) return res.json({msg: err});
         if (user.length) {
             done = true;
-            return res.send("username " + username + " already exists");
+            return res.json({msg: "Username " + username + " already exists"});
         }
     });
-
-    // Check existing email
-    // sql = "SELECT * FROM users WHERE email = ? LIMIT 1";
-    // query = db.query(sql, [username], function(err, result){
-    //     if (err) return res.send(err);
-    //     if (result.length > 0) {
-    //         return res.send("email " + email + " already exists");
-    //     }
-    // });
 
     // generate a new salt and hash
     let salt = generateSalt();
@@ -62,17 +55,16 @@ router.post('/', function(req, res, next){
     // sql = "INSERT INTO users (email, username, hash, salt) VALUES (?, ?, ?, ?)";
     if (!done){
         sql = "INSERT INTO users (username, hash, salt) VALUES (?, ?, ?)";
-        db.query(sql, [username, hash, salt], function(err, result){
-            if (err) return res.send(err);
-            let message = "Succesful! Your account has been created.";
+        query = db.query(sql, [username, hash, salt], function(err, r){
+            if (err) return res.json({msg: err});
+            let message = "success";
             sql = "SELECT * FROM users WHERE id = ?";
-            db.query(sql, [result.insertId], function(err, r){
-                if (err) return res.send(err);
+            db.query(sql, [r.insertId], function(err, r){
+                if (err) return res.json({msg: err});
                 return res.json({
                     user: JSON.parse(JSON.stringify(r[0])),
-                    insertId: result.insertId,
-                    sql: sql,
-                    message: message
+                    insertId: r.insertId,
+                    msg: message
                 });
             });
         });

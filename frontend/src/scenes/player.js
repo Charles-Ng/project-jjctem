@@ -1,10 +1,12 @@
 import Phaser from "phaser";
 //import {isDown} from "./isdown";
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 export default function(x, y, game, socket, id) {
   const player = {
     socket,
-    sprite: game.physics.add.sprite(x, y, "car").setScale(0.05),
+    sprite: game.physics.add.sprite(x, y, "car").setScale(0.03, 0.03),
     playerName: null,
     speed: 0,
     speedText: null,
@@ -119,14 +121,14 @@ export default function(x, y, game, socket, id) {
     },
     updatePlayerName(
       //ADD ACCOUNT USER NAME
-      name = id,
+      name = cookies.get('user'),
       x = this.sprite.body.x - 57,
       y = this.sprite.body.y - 59
     ) {
       // Updates the player's name text and position
       //console.log('inside player' + String(id));
 
-      this.playerName.text = String(id);
+      this.playerName.text = cookies.get('user');
       this.playerName.x = x;
       this.playerName.y = y;
       // Bring the player's name to top
