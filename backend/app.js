@@ -59,6 +59,8 @@ var whitelist = ['https://formula0.julesyan.com', 'https://julesyan.com', 'http:
 var corsOptions = {
     origin: function(origin, callback){
         var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        console.log(origin);
+        console.log(originIsWhitelisted);
         callback(null, originIsWhitelisted);
     },
     credentials: true
