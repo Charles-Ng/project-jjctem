@@ -38,7 +38,7 @@ app.use(session({
 
 
 app.use(function(req, res, next) {
-    var whitelist = ['https://formula0.julesyan.com', 'http://localhost'];
+    var whitelist = ['https://forumla0.julesyan.com', 'http://localhost'];
     var origin = req.headers.origin;
     if(whitelist.indexOf(origin) > -1){
         res.setHeader('Access-Control-Allow-Origin', origin);
