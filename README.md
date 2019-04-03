@@ -1,7 +1,8 @@
 # Forumla 0
 
 [link to our app](https://formula0.julesyan.com/)
-    
+
+  https://www.youtube.com/watch?v=Z88V_2xpaP0&feature=youtu.be  
 ### Team members
 Here are our team members in no particular order
 
